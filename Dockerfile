@@ -2,7 +2,7 @@
 FROM alpine:latest
 
 # Maintainer
-MAINTAINER steven.thwaites@docker.com
+MAINTAINER jas.atwal@docker.com
 
 # Install python and pip
 RUN apk add --no-cache --update python3
