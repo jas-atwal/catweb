@@ -185,7 +185,6 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 	$ docker image ls | grep catweb
 	$ docker image prune -a
 	```
-<<<<<<< HEAD
 
 4. Remove the demoApp application
 
@@ -194,11 +193,3 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 ```
 
 **Note**: The location of your Application Designer application files will differ from that above
-
-## Repeat!
-=======
-	
-**Note**: Location of your Application Designer appliation will differ from that below
-
-`rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp`
->>>>>>> 22bce82169ea2090985063ffab2d643a8d1a39f3
