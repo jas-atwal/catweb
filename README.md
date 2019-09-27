@@ -12,15 +12,17 @@ This demo will take you through a process of building and testing a web applicat
 
 4. Set your env variable for DTR and DCT
 
-	`$ export DTR=dtr.west.us.se.dckr.org`
-	`$ echo $DTR`
-	`$ export DOCKER_CONTENT_TRUST=1`
-	`$ echo $DOCKER_CONTENT_TRUST`
+	```$ export DTR=dtr.west.us.se.dckr.org```
+	```$ echo $DTR```
+	```$ export DOCKER_CONTENT_TRUST=1```
+	```$ echo $DOCKER_CONTENT_TRUST```
 
 5. Open a terminal and navigate to where you want to clone the GitHub repo, then `git clone` this repo
 
-	`$ git clone https://github.com/sthwaites/catweb.git`
-	`$ cd catweb`
+	```
+	$ git clone https://github.com/sthwaites/catweb.git
+	$ cd catweb
+	```
 
 ## Running the demo
 
@@ -49,7 +51,7 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 ## Build #2 - Docker Desktop Enterprise
 
-1. `$ ls` within the catweb directory (explain what the Dockerfile and docker-compose file do!)
+1. Open a terminal and `$ ls` within the `catweb` directory (explain what the Dockerfile and docker-compose file do!)
 
 2. Open the catweb diretory within VS Code, and show and explain the Dockerfile and how the app is built, you can also show the source code if you wish.
 
