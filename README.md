@@ -121,15 +121,15 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 ## Share
 
-**Note**: replace `se-jasatwal` with your own namespace you have within DTR
+Now that the docker image has been built and we have successfully tested the running of the `catweb` application locally, let's push it up to Docker Trusted Registry so that we can sign, scan, and promote the image from `dev` through to `production` for final deployment.
 
-1. Push the new image to Docker Trusted Registry (DTR).
+1. We need to `tag` the image and then `push` this tagged image to our private Docker Trusted Registry (DTR).
 
 	```bash
 	$ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy
 	$ docker push $DTR/se-jasatwal/catweb:mandy
 	```
-
+	**Note**: replace `se-jasatwal` with your own namespace you have within DTR
 	**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server
 
 	```bash
@@ -146,11 +146,14 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 	image scanning,
 	image promotions and
 	image mirroring
+	webhooks
 	```
 
 ## Run
 
-1. In a web browser navigate to `https://uco.west.us.se.dckr.org/`. If prompted to log in, please do so
+Now that the image has been pushed to our private registry, has been signed, scanned, and promoted through relevant stages of our development lifcycle, Let's run the web application within a container on Kubernetes via Docker Unviversal Control Plane.
+
+1. In a web browser navigate to `https://ucp.west.us.se.dckr.org/`. If prompted to log in, please do so
 
 2. From the left menu, click `Swarm`, then `Services`
 
