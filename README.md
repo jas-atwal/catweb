@@ -173,7 +173,7 @@ Now that the image has been pushed to our private registry, has been signed, sca
 
 4. Click `Create`
 
-5. After the container is successfully deployed, navigate in the web browser to http://www.catweb.demo This will navigate to your newly deployed container running on Azure.
+5. After the container is successfully deployed, navigate in the web browser to http://www.catweb.demo. This will navigate to your newly deployed container running on AWS via Docker Enterprise Platform.
 
 > Congratulations!!
 
