@@ -6,9 +6,9 @@ This demo will take you through a process of building and testing a web applicat
 
 1. Ensure Docker Desktop Enterprise is installed on your machine. If you are using Docker for Windows or Docker for Mac, you're good to go.  If not, you can download DDE from https://hub.docker.com/editions/community/docker-desktop-ent
 
-2. Ensure that you have login credentials for Docker Enerprise Platform 3.0 hosted at `https://ucp.west.us.se.dckr.org/`
+2. Ensure that you have login credentials for Docker Enerprise Platform 3.0 hosted at https://ucp.west.us.se.dckr.org/
 
-3. Create a repository named `catweb` in your `namespace` in Docker Trusted Registry `https://dtr.west.us.se.dckr.org/`
+3. Create a repository named `catweb` in your `namespace` in Docker Trusted Registry https://dtr.west.us.se.dckr.org/
 
 4. Set your env variable for DTR and DCT
 
@@ -42,7 +42,7 @@ The basic flow is to intially build and run the app locally using Docker Desktop
 5. Select `Flask / NGINX / MySQL application`, leave the ports as default and click `Continue`
 6. Enter a name `demoApp` and select `Scaffold`
 7. Select `Show logs` and describe the process that DDE is going through
-8. Select `Hide logs` (optional), `Run application`, view the application by opening a web browser and entering `http://localhost`
+8. Select `Hide logs` (optional), `Run application`, view the application by opening a web browser and entering http://localhost
 9. Select `Open in Visual Studio Code` and describe the folder and file structure, and the docker files that were generated
 
 We have not had to learn how to create our Dockerfile(s), docker-compose.yaml, or create the folder and file structure, a bonus being that we have a skeleton application which is up and running in less than a minute.
@@ -73,7 +73,7 @@ $ docker ps
 
 > Note: the volume mount is attaching itself but the live update is not working!
 
-5. Open a web browser and show the app running at `http://localhost:5001`.  You will notice the images are not displaying!
+5. Open a web browser and show the app running at http://localhost:5001.  You will notice the images are not displaying!
 
 6. Stop the container
 
@@ -137,7 +137,7 @@ $ docker push $DTR/se-jasatwal/catweb:mandy
 $ docker login $DTR -u <uname> -p <password>
 ```
 
-2. In a web browser navigate to `https://dtr.west.us.se.dckr.org/`. If prompted to log in, please do so
+2. In a web browser navigate to https://dtr.west.us.se.dckr.org/. If prompted to log in, please do so
 
 	Click on `Repositories` and show the image you just uploaded
 	Discuss:
@@ -154,7 +154,7 @@ webhooks
 
 Now that the image has been pushed to our private registry, has been signed, scanned, and promoted through relevant stages of our development lifcycle, Let's run the web application within a container on Kubernetes via Docker Unviversal Control Plane.
 
-1. In a web browser navigate to `https://ucp.west.us.se.dckr.org/`. If prompted to log in, please do so
+1. In a web browser navigate to https://ucp.west.us.se.dckr.org/. If prompted to log in, please do so
 
 2. From the left menu, click `Swarm`, then `Services`
 
@@ -173,7 +173,7 @@ Now that the image has been pushed to our private registry, has been signed, sca
 
 4. Click `Create`
 
-5. After the container is successfully deployed, navigate in the web browser to `http://www.catweb.demo` This will navigate to your newly deployed container running on Azure.
+5. After the container is successfully deployed, navigate in the web browser to http://www.catweb.demo This will navigate to your newly deployed container running on Azure.
 
 > Congratulations!!
 
