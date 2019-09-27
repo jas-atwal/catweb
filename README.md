@@ -40,7 +40,7 @@ The basic flow is to intially build and run the app locally using Docker Desktop
 2. Select `Design new application...`, `Custom application` and explain the different available `services` and associated `ports` etc.
 4. Select the back icon `<` and then select `Choose a template`
 5. Select `Flask / NGINX / MySQL application`, leave the ports as default and click `Continue`
-6. Enter a `name` and select `Scaffold`
+6. Enter a name `demoApp` and select `Scaffold`
 7. Select `Show logs` and describe the process that DDE is going through
 8. Select `Hide logs` (optional), `Run application`, view the application by opening a web browser and entering `http://localhost`
 9. Select `Open in Visual Studio Code` and describe the folder and file structure, and the docker files that were generated
@@ -186,10 +186,10 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 	$ docker image prune -a
 	```
 
-4. Remove the demoApp application
+4. Remove the `demoApp` application
 
 ```bash
-	`rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp`
+	rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp
 ```
 
 **Note**: The location of your Application Designer application files will differ from that above
