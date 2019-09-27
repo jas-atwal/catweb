@@ -114,9 +114,9 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 9. This time, use the `docker-compose.yaml` file to run the container ensuring that you are in the `catweb` directory within your terminal
 
-	```bash
+```bash
 	$ docker-compose up -d
-	```
+```
 
 ## Share
 
@@ -154,6 +154,7 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 2. From the left menu, click `Swarm`, then `Services`
 
 	**Note**: Sometimes the left menu is blank, simply reload the page if this happens
+
 3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
 
 	a. Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:mandy`
@@ -162,7 +163,7 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 		`interlock.hostname` and `www`
 		`interlock.domain` and 	`catweb.demo`
 
-		**Note**: Make sure to click the plus after each one
+	**Note**: Make sure to click the plus after each one
 
 4. Click `Create`
 
@@ -173,9 +174,9 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 ## Post Demo Clean-up
 **Note**: Do this after EACH demo
 
-Manually delete running swarm container from UCP
-
-Manually delete tagged catweb:latest image from DTR
+1. Manually delete running swarm container from UCP
+2. Manually delete tagged catweb:latest image from DTR
+3. Remove all images and containers
 
 	```bash
 	$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
@@ -184,7 +185,7 @@ Manually delete tagged catweb:latest image from DTR
 	$ docker image ls | grep catweb
 	$ docker image prune -a
 	```
-
+	
 **Note**: Location of your Application Designer appliation will differ from that below
 
 `rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp`
