@@ -109,9 +109,9 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 **Note**: I usually tag the image w/ the name I used when I edited the `index.html` file so it's easier to remember which one to deploy
 
-	```bash
+```bash
 	$ docker build -t catweb:mandy .
-	```
+```
 
 9. This time, use the `docker-compose.yaml` file to run the container ensuring that you are in the `catweb` directory within your terminal
 
