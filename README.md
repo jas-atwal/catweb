@@ -1,6 +1,6 @@
-# Build, Share, and Run any app, anywhere, with Docker Enterprise Platform
+# _Build, Share, Run, any app, anywhere_ with **Docker Enterprise Platform**
 
-This demo will take you through a process of building and testing a web application locally using Docker Desktop Enterprise `(DDE)`, pushing the docker image up to our private registry for scanning, signing, and promotions etc., in Docker Trusted Registry `(DTR)`, and then running the web application via a container on Swarm or vanilla upstream Kubernetes through Docker Universal Control Plane `(UCP)`.
+This demo will take you through a process of building and testing a web application locally using **Docker Desktop Enterprise** `(DDE)`, pushing the docker image up to our private registry for scanning, signing, and promotions etc., in **Docker Trusted Registry** `(DTR)`, and then running the web application via an _orchestration_ engine of either _Swarm_ or vanilla upstream _Kubernetes_ through Docker **Universal Control Plane** `(UCP)`.
 
 ## Demo setup
 
@@ -28,9 +28,9 @@ $ cd catweb
 
 ## Running the demo
 
-There are two parts to the demo.  The first part will take you through the process of quickly creating a net new cloud native application in a matter of seconds.  The process takes you through `scaffolding` an application based on the Cloud Native Application Bundle `(CNAB)` specification using `Docker Application Designer` within Docker Desktop Enterprise.  The second part will go through the process of using `GitHub`, `DDE`, `DTR`, and `UCP`.
+There are two parts to the demo.  The first part will take you through the process of quickly creating a net new cloud native application in a matter of seconds.  The process takes you through _scaffolding_ an application based on the **Cloud Native Application Bundle** `(CNAB)` specification using **Docker Application Designer** within Docker Desktop Enterprise.  The second part will go through the process of using _GitHub_, _DDE_, _DTR_, and _UCP_.
 
-This demo is designed to show a `build`, `ship`, `run` workflow using a simple Flask-based web app, `catweb`.
+This demo is designed to show a _build_, _share_, _run_ Docker workflow using a simple Flask-based web app, `catweb`.
 
 The basic flow is to intially build and run the app locally using Docker Desktop Enterprise, modify the web template to show how hot mounting a volume works, build an updated image, push to Docker Trusted Registry, then deploy on AWS using Docker Universal Control Plane.
 
