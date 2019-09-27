@@ -174,6 +174,7 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 **Note**: Do this after EACH demo
 
 Manually delete running swarm container from UCP
+
 Manually delete tagged catweb:latest image from DTR
 
 	```bash
@@ -183,6 +184,7 @@ Manually delete tagged catweb:latest image from DTR
 	$ docker image ls | grep catweb
 	$ docker image prune -a
 	```
+
 **Note**: Location of your Application Designer appliation will differ from that below
 
 `rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp`
