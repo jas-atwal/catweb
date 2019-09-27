@@ -85,7 +85,7 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 7. Edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
 
-```text
+```
 "https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
 "https://media.giphy.com/media/MCfhrrNN1goH6/giphy.gif",
 "https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif",
@@ -100,13 +100,13 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 "https://media.giphy.com/media/Jjo6WPW26zDdS/giphy.gif"
 ```
 
-	**Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the file, make sure to `cd` back into the `catweb` directory before rebuilding the image in a few steps
+**Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the file, make sure to `cd` back into the `catweb` directory before rebuilding the image in a few steps
 
 7. Switch back to the web browser and show how the change you made is immediately reflected in the running container.
 
 8. Switch back to the terminal and build a new version of the catweb image.
 
-	**Note**: I usually tag the image w/ the name I used when I edited the `index.html` file so it's easier to remember which one to deploy
+**Note**: I usually tag the image w/ the name I used when I edited the `index.html` file so it's easier to remember which one to deploy
 
 	```bash
 	$ docker build -t catweb:mandy .
@@ -114,9 +114,9 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 9. This time, use the `docker-compose.yaml` file to run the container ensuring that you are in the `catweb` directory within your terminal
 
-	```bash
+```bash
 	$ docker-compose up -d
-	```
+```
 
 ## Share
 
@@ -154,6 +154,7 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 2. From the left menu, click `Swarm`, then `Services`
 
 	**Note**: Sometimes the left menu is blank, simply reload the page if this happens
+
 3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
 
 	a. Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:mandy`
@@ -162,7 +163,7 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 		`interlock.hostname` and `www`
 		`interlock.domain` and 	`catweb.demo`
 
-		**Note**: Make sure to click the plus after each one
+	**Note**: Make sure to click the plus after each one
 
 4. Click `Create`
 
@@ -173,9 +174,9 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 ## Post Demo Clean-up
 **Note**: Do this after EACH demo
 
-Manually delete running swarm container from UCP
-
-Manually delete tagged catweb:latest image from DTR
+1. Manually delete running swarm container from UCP
+2. Manually delete tagged catweb:latest image from DTR
+3. Remove all images and containers
 
 	```bash
 	$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
@@ -185,6 +186,12 @@ Manually delete tagged catweb:latest image from DTR
 	$ docker image prune -a
 	```
 
-**Note**: Location of your Application Designer appliation will differ from that below
+4. Remove the demoApp application
 
-`rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp`
+```bash
+	`rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp`
+```
+
+**Note**: The location of your Application Designer application files will differ from that above
+
+## Repeat!
