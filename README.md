@@ -162,12 +162,12 @@ Now that the image has been pushed to our private registry, has been signed, sca
 
 3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
 
-a. Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:mandy`
-b. Under `Network` select `Add Port+`
-c. Enter the port numbers `5001`, and `5000` in the `source` and `target` fields respectively
-d. Under `Labels` add two lables:
-	`interlock.hostname` and `www`
-	`interlock.domain` and 	`catweb.demo`
+- Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:mandy`
+- Under `Network` select `Add Port+`
+- Enter the port numbers `5001`, and `5000` in the `source` and `target` fields respectively
+- Under `Labels` add two lables:
+	- `interlock.hostname` and `www`
+	- `interlock.domain` and `catweb.demo`
 
 **Note**: Make sure to click the plus after each one
 
