@@ -12,15 +12,17 @@ This demo will take you through a process of building and testing a web applicat
 
 4. Set your env variable for DTR and DCT
 
-	```$ export DTR=dtr.west.us.se.dckr.org```
-	```$ echo $DTR```
-	```$ export DOCKER_CONTENT_TRUST=1```
-	```$ echo $DOCKER_CONTENT_TRUST```
+	```bash
+	$ export DTR=dtr.west.us.se.dckr.org
+	$ echo $DTR
+	$ export DOCKER_CONTENT_TRUST=1
+	$ echo $DOCKER_CONTENT_TRUST
+	```
 
 5. Open a terminal and navigate to where you want to clone the GitHub repo, then `git clone` this repo
 
-	```
-	$ git clone https://github.com/sthwaites/catweb.git
+	```bash
+	$ git clone https://github.com/jas-atwal/catweb.git
 	$ cd catweb
 	```
 
@@ -28,9 +30,9 @@ This demo will take you through a process of building and testing a web applicat
 
 There are two parts to the demo.  The first part will take you through the process of quickly creating a net new cloud native application in a matter of seconds.  The process takes you through scaffolding an application based on the Cloud Native Application Bundle (CNAB) specification using Docker Application Designer within Docker Desktop Enterprise.  The second part will go through the process of using 
 
-This demo is designed to show a build, ship, run workflow using a simple Flask-based web app, catweb.
+This demo is designed to show a build, ship, run workflow using a simple Flask-based web app, `catweb`.
 
-The basic flow is run the app locally, modify the web template to show how hot mounting a volume works, build an updated image, push to DTR, then deploy on AWS using Docker Universal Control Plane.
+The basic flow is to intially build and run the app locally using Docker Desktop Enterprise, modify the web template to show how hot mounting a volume works, build an updated image, push to Docker Trusted Registry, then deploy on AWS using Docker Universal Control Plane.
 
 ## Build #1 - Application Designer
 
@@ -57,13 +59,17 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 3. Build the app (explain that Docker is going through each step within the Dockerfile in the specified order)
 
-	`$ docker build --no-cache -t catweb .`
-	`$ docker image ls | grep catweb`
+	```bash
+	$ docker build --no-cache -t catweb .
+	$ docker image ls | grep catweb
+	```
 
 4. Run the app and mount the local directory into the source code directory in the container
 
-	`$ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest`
-	`$ docker ps`
+	```bash
+	$ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
+	$ docker ps
+	```
 
 > Note: the volume mount is attaching itself but the live update is not working!
 
@@ -71,13 +77,15 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 6. Stop the container
 
-	`$ docker ps`
+	```bash
+	$ docker ps
+	```
 
 6. Switch back to VS Code and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
 
 7. Edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
 
-```URL
+```text
 "https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
 "https://media.giphy.com/media/MCfhrrNN1goH6/giphy.gif",
 "https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif",
@@ -100,11 +108,15 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 	**Note**: I usually tag the image w/ the name I used when I edited the `index.html` file so it's easier to remember which one to deploy
 
-	`$ docker build -t catweb:mandy .`
+	```bash
+	$ docker build -t catweb:mandy .
+	```
 
 9. This time, use the `docker-compose.yaml` file to run the container ensuring that you are in the `catweb` directory within your terminal
 
-	`$ docker-compose up -d`
+	```bash
+	$ docker-compose up -d
+	```
 
 ## Share
 
@@ -112,12 +124,16 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 1. Push the new image to Docker Trusted Registry (DTR).
 
-	`$ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy`
-	`$ docker push $DTR/se-jasatwal/catweb:mandy`
+	```bash
+	$ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy
+	$ docker push $DTR/se-jasatwal/catweb:mandy
+	```
 
 	**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server
 
-	`$ docker login $DTR -u <uname> -p <password>`
+	```bash
+	$ docker login $DTR -u <uname> -p <password>
+	```
 
 2. In a web browser navigate to `https://dtr.west.us.se.dckr.org/`. If prompted to log in, please do so
 
@@ -160,10 +176,13 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 Manually delete running swarm container from UCP
 Manually delete tagged catweb:latest image from DTR
 
-$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
-$ docker container rm catweb -f
-$ docker image rm catweb
-$ docker image ls | grep catweb
-$ docker image prune -a
+	```bash
+	$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
+	$ docker container rm catweb -f
+	$ docker image rm catweb
+	$ docker image ls | grep catweb
+	$ docker image prune -a
+	```
+**Note**: Location of your Application Designer appliation will differ from that below
 
-rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp
+`rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp`
