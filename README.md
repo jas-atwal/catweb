@@ -12,19 +12,19 @@ This demo will take you through a process of building and testing a web applicat
 
 4. Set your env variable for DTR and DCT
 
-	```bash
-	$ export DTR=dtr.west.us.se.dckr.org
-	$ echo $DTR
-	$ export DOCKER_CONTENT_TRUST=1
-	$ echo $DOCKER_CONTENT_TRUST
-	```
+```bash
+$ export DTR=dtr.west.us.se.dckr.org
+$ echo $DTR
+$ export DOCKER_CONTENT_TRUST=1
+$ echo $DOCKER_CONTENT_TRUST
+```
 
 5. Open a terminal and navigate to where you want to clone the GitHub repo, then `git clone` this repo
 
-	```bash
-	$ git clone https://github.com/jas-atwal/catweb.git
-	$ cd catweb
-	```
+```bash
+$ git clone https://github.com/jas-atwal/catweb.git
+$ cd catweb
+```
 
 ## Running the demo
 
@@ -59,17 +59,17 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 3. Build the app (explain that Docker is going through each step within the Dockerfile in the specified order)
 
-	```bash
-	$ docker build --no-cache -t catweb .
-	$ docker image ls | grep catweb
-	```
+```bash
+$ docker build --no-cache -t catweb .
+$ docker image ls | grep catweb
+```
 
 4. Run the app and mount the local directory into the source code directory in the container
 
-	```bash
-	$ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
-	$ docker ps
-	```
+```bash
+$ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
+$ docker ps
+```
 
 > Note: the volume mount is attaching itself but the live update is not working!
 
@@ -77,10 +77,10 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 6. Stop the container
 
-	```bash
-	$ docker ps
-	$ docker container stop catweb
-	```
+```bash
+$ docker ps
+$ docker container stop catweb
+```
 
 6. Switch back to VS Code and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
 
@@ -110,13 +110,13 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 **Note**: I usually tag the image w/ the name I used when I edited the `index.html` file so it's easier to remember which one to deploy
 
 ```bash
-	$ docker build -t catweb:mandy .
+$ docker build -t catweb:mandy .
 ```
 
 9. This time, use the `docker-compose.yaml` file to run the container ensuring that you are in the `catweb` directory within your terminal
 
 ```bash
-	$ docker-compose up -d
+$ docker-compose up -d
 ```
 
 ## Share
@@ -125,10 +125,11 @@ Now that the docker image has been built and we have successfully tested the run
 
 1. We need to `tag` the image and then `push` this tagged image to our private Docker Trusted Registry (DTR).
 
-	```bash
-	$ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy
-	$ docker push $DTR/se-jasatwal/catweb:mandy
-	```
+```bash
+$ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy
+$ docker push $DTR/se-jasatwal/catweb:mandy
+```
+
 	**Note**: replace `se-jasatwal` with your own namespace you have within DTR
 	**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server
 
@@ -182,18 +183,18 @@ Now that the image has been pushed to our private registry, has been signed, sca
 2. Manually delete tagged catweb:latest image from DTR
 3. Remove all images and containers
 
-	```bash
-	$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
-	$ docker container rm catweb -f
-	$ docker image rm catweb
-	$ docker image ls | grep catweb
-	$ docker image prune -a
-	```
+```bash
+$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
+$ docker container rm catweb -f
+$ docker image rm catweb
+$ docker image ls | grep catweb
+$ docker image prune -a
+```
 
 4. Remove the `demoApp` application
 
 ```bash
-	rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp
+rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp
 ```
 
 **Note**: The location of your Application Designer application files will differ from that above
