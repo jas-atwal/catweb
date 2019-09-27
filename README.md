@@ -79,6 +79,7 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 	```bash
 	$ docker ps
+	$ docker container stop catweb
 	```
 
 6. Switch back to VS Code and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
