@@ -19,7 +19,7 @@ $ export DOCKER_CONTENT_TRUST=1
 $ echo $DOCKER_CONTENT_TRUST
 ```
 
-5. Open a terminal and navigate to where you want to clone the GitHub repo, then `git clone` this repo
+5. Open a terminal and `cd` to where you want to `git clone` the GitHub repo to, then `cd` to the app folder
 
 ```bash
 $ git clone https://github.com/jas-atwal/catweb.git
