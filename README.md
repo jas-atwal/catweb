@@ -1,4 +1,4 @@
-# CatWeb - Build, Share, and Run andy application, anywhere, with Docker Enterprise Platform
+# CatWeb - Build, Share, and Run any app, anywhere, with Docker Enterprise Platform
 
 This demo will take you through a process of building and testing a web application locall using Docker Desktop Enterprise (DDE), pushing the docker image up to our private registry for scanning, signing, and promotions etc., in Docker Trusted Registry (DTR), and then running the web application via a container on Swarm or vanilla upstream Kubernetes through Docker Universal Control Plane (UCP).
 
