@@ -1,80 +1,150 @@
 # CatWeb - Build Ship Run
 
+This demo will take you through a process of building and testing a web application locall using Docker Desktop Enterprise (DDE), pushing the docker image up to a registry, in our case Docker Trusted Registry (DTR), and then running the web application via a container on Swarm or Kubernetes through Docker Universal Control Plane (UCP).
+
 ## Demo setup
 
-1. If you haven't already, clone this repo
+1. Ensure Docker Desktop Enterprise is installed on your machine. If you are using Docker for Windows or Docker for Mac, you're good to go.  If not, you can download DDE from https://hub.docker.com/editions/community/docker-desktop-ent
 
-	`git clone https://github.com/sthwaites/catweb.git`
+2. Ensure that you have login credentials for Docker Enerprise Platform 3.0 hosted at `https://ucp.west.us.se.dckr.org/`
 
-1. Ensure docker and docker-compose are installed. If you are using Docker for Windows or Docker for Mac, you're good to go.
+3. Create a repository named `catweb` in your `namespace` in Docker Trusted Registry `https://dtr.west.us.se.dckr.org/`
 
-1. Edit the `/etc/hosts` file on the demo laptop and add the following entry for `www.catweb.demo` (it points to the IP of the load balancer for the UCP nodes)
+4. Set your env variable for DTR and DCT
 
-	`13.91.251.79    www.catweb.demo`
+	`$ export DTR=dtr.west.us.se.dckr.org`
+	`$ echo $DTR`
+	`$ export DOCKER_CONTENT_TRUST=1`
+	`$ echo $DOCKER_CONTENT_TRUST`
 
-2. In the advanced preferences for Docker for Mac add `dtrdemo.westus.cloudapp.azure.com` under `Insecure registries` and click `Apply & Restart`
+5. Via a terminal navigate to where you want to clone the GitHub repo, then clone this repo
+
+	`$ git clone https://github.com/sthwaites/catweb.git`
+	`$ cd catweb`
 
 ## Running the demo
 
+There are two parts to the demo.  The first part will take you through the process of scaffolding a Cloud Native Appliation Bundle (CNAB) using Docker Application Designer based on Ruby within Docker Desktop Enterprise.
+
+The second 
+
 This demo is designed to show a build, ship, run workflow using a simple Flask-based web app, catweb.
 
-The basic flow is run the app run the app locally, modify the web template to show how hot mounting a volume works, build an updated image, push to DTR, then deploy on Azure using Docker Data Center.
+The basic flow is run the app locally, modify the web template to show how hot mounting a volume works, build an updated image, push to DTR, then deploy on AWS using Docker Universal Control Plane.
 
-1. `$ cd ~/vmworld2016demo/catweb` (this location will vary depending on where the repo was cloned to)
+## Build 2
 
-1. Show and explain the Dockerfile and how the app is built, you can also show the source code if you wish.
+1. `$ ls` within the catweb directory (explain what the Dockerfile and docker-compose file do!)
 
-1. Run the app and mount the local directory into the source code directory in the container
+2. Open the catweb diretory within VS Code, and show and explain the Dockerfile and how the app is built, you can also show the source code if you wish.
 
-	`$ docker run -d -p 5000:5000 --name catweb -v $(pwd):/usr/src/app dtrdemo.westus.cloudapp.azure.com/demouser/catweb`
+3. Build the app (explain that Docker is going through each step within the Dockerfile in the specified order)
 
-1. Switch into the browser and show the app running at `http://localhost:5000`
+	`$ docker build --no-cache -t catweb .`
+	`$ docker image ls | grep catweb`
 
-1. Switch back to your terminal and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Josephine's Random Cat Gif". Save your changes.
+4. Run the app and mount the local directory into the source code directory in the container
 
-	**Note**: If you `cd` into the `templates` directory to edit the file, make sure to `cd` back into the `catweb` directory before rebuilding the image in a few steps
+	`$ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest`
+	`$ docker ps`
 
-1. Switch back to the web browser and show how the change you made is immediately reflected in the running container.
+> Note: the volume mount is attaching itself but the live update is not working!
 
-1. Switch back to the terminal and build a new version of the catweb image.
+5. Open a web browser and show the app running at `http://localhost:5001`.  You will notice the images are not displaying!
+
+6. Stop the container
+
+	`$ docker ps`
+
+6. Switch back to VS Code and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
+
+7. Edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
+
+```URL
+"https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
+"https://media.giphy.com/media/MCfhrrNN1goH6/giphy.gif",
+"https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif",
+"https://media.giphy.com/media/LqON4xbn2u0JDWRniQ/giphy.gif",
+"https://media.giphy.com/media/IWG1kktEJFFDy/giphy.gif",
+"https://media.giphy.com/media/QGwIkEl3QbIY0/giphy.gif",
+"https://media.giphy.com/media/2eKoCnqFwHpD5W7RW6/giphy.gif",
+"https://media.giphy.com/media/1BGwLa5CRz8pZK6bbH/giphy.gif",
+"https://media.giphy.com/media/11s7Ke7jcNxCHS/giphy.gif",
+"https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif",
+"https://media.giphy.com/media/Nm8ZPAGOwZUQM/giphy.gif",
+"https://media.giphy.com/media/Jjo6WPW26zDdS/giphy.gif"
+```
+
+	**Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the file, make sure to `cd` back into the `catweb` directory before rebuilding the image in a few steps
+
+7. Switch back to the web browser and show how the change you made is immediately reflected in the running container.
+
+8. Switch back to the terminal and build a new version of the catweb image.
 
 	**Note**: I usually tag the image w/ the name I used when I edited the `index.html` file so it's easier to remember which one to deploy
 
-	`$ docker build -t dtrdemo.westus.cloudapp.azure.com/demouser/catweb:<tag>`
+	`$ docker build -t catweb:mandy .`
 
-1. Push the new image to DTR.
+9. This time, use the `docker-compose.yaml` file to run the container ensuring that you are in the `catweb` directory within your terminal
 
-	`$ docker push dtrdemo.westus.cloudapp.azure.com/demouser/catweb:<tag>`
+	`$ docker-compose up -d`
+
+## Share
+
+**Note**: replace `se-jasatwal` with your own namespace you have within DTR
+
+1. Push the new image to Docker Trusted Registry (DTR).
+
+	`$ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy`
+	`$ docker push $DTR/se-jasatwal/catweb:mandy`
 
 	**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server
 
-	`$ docker login -u demouser -p demo dtrdemo.westus.cloudapp.azure.com`
+	`$ docker login $DTR -u <uname> -p <password>`
 
-1. In a web browser navigate to `https://dtrdemo.westus.cloudapp.azure.com`. If prompted to log in the username is `demouser` and the password is `demo`.
+2. In a web browser navigate to `https://dtr.west.us.se.dckr.org/`. If prompted to log in, please do so
 
 	Click on `Repositories` and show the image you just uploaded
+	Discuss:
 
-1. In a web browser navigate to `https://ucpdemo.westus.cloudapp.azure.com` and log into UCP. Feel free to give a quick tour of UCP and some of its features.
+	```text
+	image signing
+	image scanning,
+	image promotions and
+	image mirroring
+	```
 
-1. From the left menu, click `Containers`
+## Run
+
+1. In a web browser navigate to `https://uco.west.us.se.dckr.org/`. If prompted to log in, please do so
+
+2. From the left menu, click `Swarm`, then `Services`
 
 	**Note**: Sometimes the left menu is blank, simply reload the page if this happens
+3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
 
-1. Click the `+ Deploy Container` button and fill in the following values
-
-	1. Image name: `dtrdemo.westus.cloudapp.azure.com/demouser/catweb:<tag>`
-	2. Under `Network` make sure the box next to `Automatically expose all ports` is checked
-	3. Under `Labels` add two lables:
+	a. Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:mandy`
+	b. Under `Network` select `Add Port+` and enter the port numbers `5001`, and `5000` and the `source` and `target` respectively	
+	c. Under `Labels` add two lables:
 		`interlock.hostname` and `www`
 		`interlock.domain` and 	`catweb.demo`
 
 		**Note**: Make sure to click the plus after each one
 
-1. Click `Run Container`
+4. Click `Create`
 
-1. After the container is successfully deployed, navigate in the web browser to `http://www.catweb.demo` This will navigate to your newly deployed container running on Azure.
+5. After the container is successfully deployed, navigate in the web browser to `http://www.catweb.demo` This will navigate to your newly deployed container running on Azure.
 
-## Post Demo Clenup
+> Congratulations!!
+
+## Post Demo Clean-up
 **NOTE** Do this after EACH demo
 
-1. In Universal Control Plane remove the container you just deployed. If you don't there will be conflicting versions running.
+Manually delete running swarm container from UCP
+Manually delete tagged catweb:latest image from DTR
+
+$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
+$ docker container rm catweb -f
+$ docker image rm catweb
+$ docker image ls | grep catweb
+$ docker image prune -a
