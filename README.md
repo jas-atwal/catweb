@@ -130,25 +130,25 @@ $ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy
 $ docker push $DTR/se-jasatwal/catweb:mandy
 ```
 
-	**Note**: replace `se-jasatwal` with your own namespace you have within DTR
-	**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server
+**Note**: replace `se-jasatwal` with your own namespace you have within DTR
+**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server
 
-	```bash
-	$ docker login $DTR -u <uname> -p <password>
-	```
+```bash
+$ docker login $DTR -u <uname> -p <password>
+```
 
 2. In a web browser navigate to `https://dtr.west.us.se.dckr.org/`. If prompted to log in, please do so
 
 	Click on `Repositories` and show the image you just uploaded
 	Discuss:
 
-	```text
-	image signing
-	image scanning,
-	image promotions and
-	image mirroring
-	webhooks
-	```
+```text
+image signing
+image scanning,
+image promotions and
+image mirroring
+webhooks
+```
 
 ## Run
 
@@ -158,7 +158,7 @@ Now that the image has been pushed to our private registry, has been signed, sca
 
 2. From the left menu, click `Swarm`, then `Services`
 
-	**Note**: Sometimes the left menu is blank, simply reload the page if this happens
+**Note**: Sometimes the left menu is blank, simply reload the page if this happens
 
 3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
 
@@ -168,7 +168,7 @@ Now that the image has been pushed to our private registry, has been signed, sca
 		`interlock.hostname` and `www`
 		`interlock.domain` and 	`catweb.demo`
 
-	**Note**: Make sure to click the plus after each one
+**Note**: Make sure to click the plus after each one
 
 4. Click `Create`
 
@@ -177,6 +177,7 @@ Now that the image has been pushed to our private registry, has been signed, sca
 > Congratulations!!
 
 ## Post Demo Clean-up
+
 **Note**: Do this after EACH demo
 
 1. Manually delete running swarm container from UCP
