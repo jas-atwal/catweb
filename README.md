@@ -36,20 +36,21 @@ The basic flow is to intially build and run the app locally using Docker Desktop
 
 ## Build #1 - Application Designer
 
-1. Select the `Moby` icon in your system tray and navigate around the interesting options, explaining each one in turn.
-2. Select `Design new application...`, `Custom application` and explain the different available `services` and associated `ports` etc.
-4. Select the back icon `<` and then select `Choose a template`
-5. Select `Flask / NGINX / MySQL application`, leave the ports as default and click `Continue`
-6. Enter a name `demoApp` and select `Scaffold`
-7. Select `Show logs` and describe the process that DDE is going through
-8. Select `Hide logs` (optional), `Run application`, view the application by opening a web browser and entering http://localhost
-9. Select `Open in Visual Studio Code` and describe the folder and file structure, and the docker files that were generated
+1. Click the `Moby` icon in your system tray and navigate around the interesting options, explaining each one in turn.
+2. Click `Design new application...`, `Custom application` and explain the different available `services` and associated `ports` etc.
+4. Click the back icon `<` and then select `Choose a template`
+5. Click `Flask / NGINX / MySQL application`, leave the ports as default and click `Continue`
+6. Click a name `demoApp` and select `Scaffold`
+7. Click `Show logs` and describe the process that DDE is going through
+8. Click `Hide logs` (optional), `Run application`, view the application by opening a web browser and entering http://localhost
+9. Click `Open in Visual Studio Code` and describe the folder and file structure, and the docker files that were generated
 
 We have not had to learn how to create our Dockerfile(s), docker-compose.yaml, or create the folder and file structure, a bonus being that we have a skeleton application which is up and running in less than a minute.
 
 Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server application, we can build upon this and create our net new cloud native applications.  
 
-10. `Stop` the application, and then `exit` the Application Designer UI
+10. Within the Application Designer UI click `Stop` to stop the application, then click the back `<` chevron
+11. Click the `delete` icon, `confirm and remove application`, and exit `x` the Application Designer UI
 
 ## Build #2 - Docker Desktop Enterprise
 
