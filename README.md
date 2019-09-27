@@ -1,4 +1,4 @@
-# CatWeb - Build Ship Run
+# CatWeb - Build, Share, Run Demo
 
 This demo will take you through a process of building and testing a web application locall using Docker Desktop Enterprise (DDE), pushing the docker image up to a registry, in our case Docker Trusted Registry (DTR), and then running the web application via a container on Swarm or Kubernetes through Docker Universal Control Plane (UCP).
 
@@ -17,22 +17,37 @@ This demo will take you through a process of building and testing a web applicat
 	`$ export DOCKER_CONTENT_TRUST=1`
 	`$ echo $DOCKER_CONTENT_TRUST`
 
-5. Via a terminal navigate to where you want to clone the GitHub repo, then clone this repo
+5. Open a terminal and navigate to where you want to clone the GitHub repo, then `git clone` this repo
 
 	`$ git clone https://github.com/sthwaites/catweb.git`
 	`$ cd catweb`
 
 ## Running the demo
 
-There are two parts to the demo.  The first part will take you through the process of scaffolding a Cloud Native Appliation Bundle (CNAB) using Docker Application Designer based on Ruby within Docker Desktop Enterprise.
-
-The second 
+There are two parts to the demo.  The first part will take you through the process of quickly creating a net new cloud native application in a matter of seconds.  The process takes you through scaffolding an application based on the Cloud Native Application Bundle (CNAB) specification using Docker Application Designer within Docker Desktop Enterprise.  The second part will go through the process of using 
 
 This demo is designed to show a build, ship, run workflow using a simple Flask-based web app, catweb.
 
 The basic flow is run the app locally, modify the web template to show how hot mounting a volume works, build an updated image, push to DTR, then deploy on AWS using Docker Universal Control Plane.
 
-## Build 2
+## Build #1 - Application Designer
+
+1. Select the `Moby` icon in your system tray and navigate around the interesting options, explaining each one in turn.
+2. Select `Design new application...`, `Custom application` and explain the different available `services` and associated `ports` etc.
+4. Select the back icon `<` and then select `Choose a template`
+5. Select `Flask / NGINX / MySQL application`, leave the ports as default and click `Continue`
+6. Enter a `name` and select `Scaffold`
+7. Select `Show logs` and describe the process that DDE is going through
+8. Select `Hide logs` (optional), `Run application`, view the application by opening a web browser and entering `http://localhost`
+9. Select `Open in Visual Studio Code` and describe the folder and file structure, and the docker files that were generated
+
+We have not had to learn how to create our Dockerfile(s), docker-compose.yaml, or create the folder and file structure, a bonus being that we have a skeleton application which is up and running in less than a minute.
+
+Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server application, we can build upon this and create our net new cloud native applications.  
+
+10. `Stop` the application, and then `exit` the Application Designer UI
+
+## Build #2 - Docker Desktop Enterprise
 
 1. `$ ls` within the catweb directory (explain what the Dockerfile and docker-compose file do!)
 
@@ -138,7 +153,7 @@ The basic flow is run the app locally, modify the web template to show how hot m
 > Congratulations!!
 
 ## Post Demo Clean-up
-**NOTE** Do this after EACH demo
+**Note**: Do this after EACH demo
 
 Manually delete running swarm container from UCP
 Manually delete tagged catweb:latest image from DTR
@@ -148,3 +163,5 @@ $ docker container rm catweb -f
 $ docker image rm catweb
 $ docker image ls | grep catweb
 $ docker image prune -a
+
+rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp
