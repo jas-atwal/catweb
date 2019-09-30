@@ -209,6 +209,7 @@ Now that the image has been pushed to our private registry, has been signed, sca
 
 ```bash
 $ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
+$ docker stack rm catweb
 $ docker container rm catweb -f
 $ docker image rm catweb
 $ docker image ls | grep catweb
