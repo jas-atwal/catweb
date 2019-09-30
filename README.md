@@ -1,6 +1,6 @@
 # _Build, Share, Run, any app, anywhere_ with **Docker Enterprise Platform**
 
-This demo will take you through a process of building and testing a web application locally using **Docker Desktop Enterprise** `(DDE)`, pushing the docker image up to our private registry for scanning, signing, and promotions etc., in **Docker Trusted Registry** `(DTR)`, and then running the web application via an _orchestration_ engine of either _Swarm_ or vanilla upstream _Kubernetes_ through Docker **Universal Control Plane** `(UCP)`.
+This demo will take you through a process of building and testing a web application locally using **Docker Desktop Enterprise** `(DDE)`, pushing the docker image up to our private registry for scanning, signing, and promotions etc., in **Docker Trusted Registry** `(DTR)`, and then running the web application via an _orchestration_ engine of either _Swarm_ or vanilla upstream _Kubernetes_ through **Docker Universal Control Plane** `(UCP)`.
 
 ## Demo setup
 
@@ -68,6 +68,12 @@ $ docker image ls | grep catweb
 4. Run the app and mount the local directory into the source code directory in the container
 
 ```bash
+$ docker-compose up
+```
+
+To run the app within a container without using the docker-compose file you can use the comment below
+
+```bash
 $ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
 $ docker ps
 ```
@@ -104,27 +110,34 @@ $ docker container stop catweb
 
 **Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the file, make sure to `cd` back into the `catweb` directory before rebuilding the image in a few steps
 
-7. Switch back to the web browser and show how the change you made is immediately reflected in the running container.
-
-8. Switch back to the terminal and build a new version of the catweb image.
-
-**Note**: I usually tag the image w/ the name I used when I edited the `index.html` file so it's easier to remember which one to deploy
+7. Run the app again within a container using `docker-compose`, you will see that the images are now fixed.
 
 ```bash
-$ docker build -t catweb:mandy .
+$ docker-compose up
 ```
 
-9. This time, use the `docker-compose.yaml` file to run the container ensuring that you are in the `catweb` directory within your terminal
+8. We can now test the running of the app within multiple containers using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` and `docker container ls`
 
 ```bash
-$ docker-compose up -d
+$ docker stack deploy -c docker-compose.yml catweb
 ```
+
+9. Let's see the running containers
+
+```bash
+$ docker ps
+$ docker container ls
+```
+
+10. Let's view the app at http://localhost:5001.  Notice how the container ID changes when you refresh the page.  This is because we are running two instances of the image in two separate containers and the traffic is being load balanced between the two.
+
+We are now ready to share the image using `Docker Hub` or `Docker Trusted Registry `.  In our demo we will use `Docker Trusted Registry`
 
 ## Share
 
 Now that the docker image has been built and we have successfully tested the running of the `catweb` application locally, let's push it up to Docker Trusted Registry so that we can sign, scan, and promote the image from `dev` through to `production` for final deployment.
 
-1. We need to `tag` the image and then `push` this tagged image to our private Docker Trusted Registry (DTR).
+1. We need to `tag` the image and then `push` this tagged image to our private **Docker Trusted Registry** `(DTR)`.
 
 ```bash
 $ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy
@@ -137,6 +150,8 @@ $ docker push $DTR/se-jasatwal/catweb:mandy
 ```bash
 $ docker login $DTR -u <uname> -p <password>
 ```
+
+The DTR which we are using for this demo is `dtr.west.us.se.dckr.org`
 
 2. In a web browser navigate to https://dtr.west.us.se.dckr.org/. If prompted to log in, please do so
 
@@ -158,8 +173,6 @@ Now that the image has been pushed to our private registry, has been signed, sca
 1. In a web browser navigate to https://ucp.west.us.se.dckr.org/. If prompted to log in, please do so
 
 2. From the left menu, click `Swarm`, then `Services`
-
-**Note**: Sometimes the left menu is blank, simply reload the page if this happens
 
 3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
 
