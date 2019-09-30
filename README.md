@@ -44,6 +44,7 @@ The basic flow is to intially build and run the app locally using Docker Desktop
 7. Click `Show logs` and describe the process that DDE is going through
 8. Click `Hide logs` (optional), `Run application`, view the application by opening a web browser and entering http://localhost
 9. Click `Open in Visual Studio Code` and describe the folder and file structure, and the docker files that were generated
+10. Run `docker ps` in a terminal to view the running container
 
 We have not had to learn how to create our Dockerfile(s), docker-compose.yaml, or create the folder and file structure, a bonus being that we have a skeleton application which is up and running in less than a minute.
 
@@ -56,40 +57,48 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 
 1. Open a terminal and `$ ls` within the `catweb` directory (explain what the Dockerfile and docker-compose file do!)
 
-2. Open the catweb diretory within VS Code, and show and explain the Dockerfile and how the app is built, you can also show the source code if you wish.
+> Notice that we have a `Dockerfile` and a `docker-compose.yaml`
 
-3. Build the app (explain that Docker is going through each step within the Dockerfile in the specified order)
+2. Open the `catweb` diretory within `VS Code`, open the `Dockerfile` and explain the how the app is `built`.  You can also show the source code if you wish
+
+3. `Build` the app (explain that Docker is going through each step within the Dockerfile in the specified order), and use the `docker image` command to view the details of the built image
 
 ```bash
 $ docker build --no-cache -t catweb .
 $ docker image ls | grep catweb
 ```
 
-4. Run the app and mount the local directory into the source code directory in the container
+4. Within `VS Code`, open the `docker-compose` file and explain how it works.  Now lets run run the app and mount the local directory into the source code directory in the container as per the instructions within the `docker-compose` file.
 
 ```bash
 $ docker-compose up
 ```
 
-To run the app within a container without using the docker-compose file you can use the comment below
+(Optional) You can also run the app within a container without having to use the `docker-compose.yaml` file by running the command below
 
 ```bash
 $ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
+```
+
+View the running container using
+
+```bash
 $ docker ps
 ```
 
-> Note: the volume mount is attaching itself but the live update is not working!
+> Note to self: the volume mount is attaching itself but the live update is not working!  Need to check and resolve this!
 
 5. Open a web browser and show the app running at http://localhost:5001.  You will notice the images are not displaying!
 
 6. Stop the container
 
 ```bash
+$ ^C
 $ docker ps
 $ docker container stop catweb
 ```
 
-6. Switch back to VS Code and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
+6. Switch back to `VS Code` and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
 
 7. Edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
 
@@ -108,15 +117,15 @@ $ docker container stop catweb
 "https://media.giphy.com/media/Jjo6WPW26zDdS/giphy.gif"
 ```
 
-**Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the file, make sure to `cd` back into the `catweb` directory before rebuilding the image in a few steps
+**Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the `index.html` file, make sure to `cd` back into the `catweb` directory before updating the `app.py` file.
 
-7. Run the app again within a container using `docker-compose`, you will see that the images are now fixed.
+7. Run the app again within a container using `docker-compose up`, you will see that the images are now fixed and the title has changed
 
 ```bash
 $ docker-compose up
 ```
 
-8. We can now test the running of the app within multiple containers using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` and `docker container ls`
+8. We have a working app, let's test the running of the app within multiple containers (two in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` and `docker container ls`
 
 ```bash
 $ docker stack deploy -c docker-compose.yml catweb
@@ -126,10 +135,9 @@ $ docker stack deploy -c docker-compose.yml catweb
 
 ```bash
 $ docker ps
-$ docker container ls
 ```
 
-10. Let's view the app at http://localhost:5001.  Notice how the container ID changes when you refresh the page.  This is because we are running two instances of the image in two separate containers and the traffic is being load balanced between the two.
+10. Let's view the app at http://localhost:5001.  Notice how the `container ID` changes when you refresh the page.  This is because we are running two instances of the image in two separate containers and the traffic is being load balanced between the two.
 
 We are now ready to share the image using `Docker Hub` or `Docker Trusted Registry `.  In our demo we will use `Docker Trusted Registry`
 
