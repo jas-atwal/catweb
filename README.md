@@ -10,13 +10,14 @@ This demo will take you through a process of building and testing a web applicat
 
 3. Create a repository named `catweb` in your `namespace` in Docker Trusted Registry at https://dtr.west.us.se.dckr.org/
 
-4. Set your env variable for `DTR` and `DCT`
+4. Set your env variable for `DTR` and `DCT` and login to `DTR`
 
 ```bash
 $ export DTR=dtr.west.us.se.dckr.org
 $ echo $DTR
 $ export DOCKER_CONTENT_TRUST=1
 $ echo $DOCKER_CONTENT_TRUST
+$ docker login $DTR -u <uname> -p <password>
 ```
 
 5. Open a terminal and `cd` to where you want to `git clone` the GitHub repo to, then `cd` to the app folder
@@ -86,21 +87,13 @@ View the running container using
 $ docker ps
 ```
 
-> Note to self: the volume mount is attaching itself but the live update is not working!  Need to check and resolve this!
-
 5. Open a web browser and show the app running at http://localhost:5001.  You will notice the images are not displaying!
 
-6. Stop the container
+6. Stop the container `$ ^C `
 
-```bash
-$ ^C
-$ docker ps
-$ docker container stop catweb
-```
+7. Switch back to `VS Code` and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
 
-6. Switch back to `VS Code` and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
-
-7. Edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
+8. Edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
 
 ```
 "https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
@@ -119,25 +112,36 @@ $ docker container stop catweb
 
 **Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the `index.html` file, make sure to `cd` back into the `catweb` directory before updating the `app.py` file.
 
-7. Run the app again within a container using `docker-compose up`, you will see that the images are now fixed and the title has changed
+7. Run the app again using `docker-compose up`, you will see that the images are now fixed and the title has also changed
 
 ```bash
 $ docker-compose up
 ```
 
-8. We have a working app, let's test the running of the app within multiple containers (two in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` and `docker container ls`
+8. Stop the container `$ ^C ` 
+
+9. We have a working app, let's test the running of the app within multiple containers (two in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` and `docker container ls`
 
 ```bash
 $ docker stack deploy -c docker-compose.yml catweb
 ```
 
-9. Let's see the running containers
+10. Let's see the two running containers
 
 ```bash
 $ docker ps
 ```
 
-10. Let's view the app at http://localhost:5001.  Notice how the `container ID` changes when you refresh the page.  This is because we are running two instances of the image in two separate containers and the traffic is being load balanced between the two.
+11. Let's view the app at http://localhost:5001.  Notice how the `container ID` changes when you refresh the page.  This is because we are running two instances of the image in two separate containers and the traffic is being load balanced between the two.
+
+12. Let's bring one of the containers identified in step 10 down, and we will then check to see how many containers are running and for how long.
+
+```bash
+$ docker container kill <Conatiner ID>
+$ docker ps
+```
+
+> Notice how a new container has been stood up in place of the container that we bought down
 
 We are now ready to share the image using `Docker Hub` or `Docker Trusted Registry `.  In our demo we will use `Docker Trusted Registry`
 
@@ -209,6 +213,7 @@ Now that the image has been pushed to our private registry, has been signed, sca
 
 ```bash
 $ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
+$ docker stack rm catweb
 $ docker container rm catweb -f
 $ docker image rm catweb
 $ docker image ls | grep catweb
