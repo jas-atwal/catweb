@@ -213,12 +213,16 @@ $ docker container rm catweb -f
 $ docker image rm catweb
 $ docker image ls | grep catweb
 $ docker image prune -a
+$ cd ..
+$ rm -R ~/Documents/Docker/Demonstrations/catweb/
 ```
+
+**Note**: The location of your `catweb` application files will differ from that above
 
 4. Remove the `demoApp` application
 
 ```bash
-rm -p /Users/jas.atwal/Documents/Docker/Demonstrations/app-designer/demoApp
+$ rm -R ~/Documents/Docker/Demonstrations/app-designer/demoApp
 ```
 
-**Note**: The location of your Application Designer application files will differ from that above
+**Note**: The location of your `Application Designer` application files will differ from that above
