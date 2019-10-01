@@ -1,6 +1,6 @@
 # _Build, Share, Run, any app, anywhere_ with **Docker Enterprise Platform**
 
-This demo will take you through a process of building and testing a web application locally using **Docker Desktop Enterprise** `(DDE)`, pushing the docker image up to our private registry for scanning, signing, and promotions etc., in **Docker Trusted Registry** `(DTR)`, and then running the web application via an _orchestration_ engine of either _Swarm_ or vanilla upstream _Kubernetes_ through **Docker Universal Control Plane** `(UCP)`.
+This demo will take you through a process of building and testing a web application locally using **Docker Desktop Enterprise** `(DDE)`, pushing the docker image up to our private registry for scanning, signing (using **Docker Content Trust** `(DCT)`, and promotions etc., in **Docker Trusted Registry** `(DTR)`, and then running the web application via an _orchestration_ engine of either _Swarm_ or vanilla upstream _Kubernetes_ through **Docker Universal Control Plane** `(UCP)`.
 
 ## Demo setup
 
@@ -18,13 +18,18 @@ $ echo $DTR
 $ docker login $DTR -u <uname> -p <password>
 ```
 
-5. **Optional** - Enable and disable content trust per-shell or per-invocation
+5. **Optional** - _Enable and disable content trust per-shell or per-invocation_
 In a shell, you can enable content trust by setting the DOCKER_CONTENT_TRUST environment variable. Enabling per-shell is useful because you can have one shell configured for trusted operations and another terminal shell for untrusted operations. You can also add this declaration to your shell profile to have it turned on always by default.
 
 To enable content trust in a bash shell enter the following command:
 
 ```bash
 $ export DOCKER_CONTENT_TRUST=1
+```
+
+and view it to ensure that it is set.
+
+```bash
 $ echo $DOCKER_CONTENT_TRUST
 ```
 
@@ -37,11 +42,11 @@ $ cd catweb
 
 ## Running the demo
 
-There are two parts to the demo.  The first part will take you through the process of quickly creating a net new cloud native application in a matter of seconds.  The process takes you through _scaffolding_ an application based on the **Cloud Native Application Bundle** `(CNAB)` specification using **Docker Application Designer** within Docker Desktop Enterprise.  The second part will go through the process of using _GitHub_, _DDE_, _DTR_, and _UCP_.
+There are two parts to the demo.  The first part will take you through the process of quickly creating a net new cloud native application in a matter of seconds.  The process takes you through _scaffolding_ an application based on the **Cloud Native Application Bundle** `(CNAB)` specification using **Docker Application Designer** within `Docker Desktop Enterprise`.  The second part will go through the process of using _GitHub_, _DDE_, _DTR_, and _UCP_.
 
 This demo is designed to show a _build_, _share_, _run_ Docker workflow using a simple Flask-based web app, `catweb`.
 
-The basic flow is to intially build and run the app locally using Docker Desktop Enterprise, modify the web template to show how hot mounting a volume works, build an updated image, push to Docker Trusted Registry, then deploy on AWS using Docker Universal Control Plane.
+The basic flow is to intially build and run the app locally using Docker Desktop Enterprise, modify the web template to show how hot mounting a volume works, pushing the image to `Docker Trusted Registry` _optionally_ signing the image with `Docker Trusted Registry`, then deploying onto `AWS` using `Docker Universal Control Plane`.
 
 ## Build #1 - Application Designer
 
@@ -195,12 +200,9 @@ Finished initializing "dtr.west.us.se.dckr.org/se-jasatwal/catweb"
 Successfully signed dtr.west.us.se.dckr.org/se-jasatwal/catweb:latest
 ```
 
-
-
 2. In a web browser navigate to https://dtr.west.us.se.dckr.org/. If prompted to log in, please do so
 
-	Click on `Repositories` and show the image you just uploaded
-	Discuss:
+Click on `Repositories` and show the image you just uploaded and discuss the automation of:
 
 ```text
 image signing
