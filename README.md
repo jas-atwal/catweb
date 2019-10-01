@@ -15,8 +15,6 @@ This demo will take you through a process of building and testing a web applicat
 ```bash
 $ export DTR=dtr.west.us.se.dckr.org
 $ echo $DTR
-$ export DOCKER_CONTENT_TRUST=1
-$ echo $DOCKER_CONTENT_TRUST
 $ docker login $DTR -u <uname> -p <password>
 ```
 
@@ -26,7 +24,8 @@ In a shell, you can enable content trust by setting the DOCKER_CONTENT_TRUST env
 To enable content trust in a bash shell enter the following command:
 
 ```bash
-export DOCKER_CONTENT_TRUST=1
+$ export DOCKER_CONTENT_TRUST=1
+$ echo $DOCKER_CONTENT_TRUST
 ```
 
 6. Open a terminal and `cd` to where you want to `git clone` the GitHub repo to, then `cd` to the app folder
