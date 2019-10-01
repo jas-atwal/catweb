@@ -20,7 +20,16 @@ $ echo $DOCKER_CONTENT_TRUST
 $ docker login $DTR -u <uname> -p <password>
 ```
 
-5. Open a terminal and `cd` to where you want to `git clone` the GitHub repo to, then `cd` to the app folder
+5. **Optional** - Enable and disable content trust per-shell or per-invocation
+In a shell, you can enable content trust by setting the DOCKER_CONTENT_TRUST environment variable. Enabling per-shell is useful because you can have one shell configured for trusted operations and another terminal shell for untrusted operations. You can also add this declaration to your shell profile to have it turned on always by default.
+
+To enable content trust in a bash shell enter the following command:
+
+```bash
+export DOCKER_CONTENT_TRUST=1
+```
+
+6. Open a terminal and `cd` to where you want to `git clone` the GitHub repo to, then `cd` to the app folder
 
 ```bash
 $ git clone https://github.com/jas-atwal/catweb.git
@@ -120,13 +129,13 @@ $ docker-compose up
 
 8. Stop the container `$ ^C ` 
 
-9. We have a working app, let's test the running of the app within multiple containers (two in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` and `docker container ls`
+9. We have a working app, let's test the running of the app within multiple containers (three in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` and `docker container ls`
 
 ```bash
 $ docker stack deploy -c docker-compose.yml catweb
 ```
 
-10. Let's see the two running containers
+10. Let's see the three running containers
 
 ```bash
 $ docker ps
@@ -152,8 +161,8 @@ Now that the docker image has been built and we have successfully tested the run
 1. We need to `tag` the image and then `push` this tagged image to our private **Docker Trusted Registry** `(DTR)`.
 
 ```bash
-$ docker tag catweb:latest $DTR/se-jasatwal/catweb:mandy
-$ docker push $DTR/se-jasatwal/catweb:mandy
+$ docker tag catweb:latest $DTR/se-jasatwal/catweb:latest
+$ docker push $DTR/se-jasatwal/catweb:latest
 ```
 
 **Note**: Replace `se-jasatwal` with your own namespace you have within DTR
@@ -163,7 +172,31 @@ $ docker push $DTR/se-jasatwal/catweb:mandy
 $ docker login $DTR -u <uname> -p <password>
 ```
 
-The DTR which we are using for this demo is `dtr.west.us.se.dckr.org`
+The `DTR` which we are using for this demo is `dtr.west.us.se.dckr.org`
+
+> If you have enabled `DOCKER_CONTENT_TRUST=1` as an `environment varibale` then the first time you `push` an image using `content trust` on your system, the session looks like this:
+
+```bash
+Signing and pushing trust metadata
+You are about to create a new root signing key passphrase. This passphrase
+will be used to protect the most sensitive key in your signing system. Please
+choose a long, complex passphrase and be careful to keep the password and the
+key file itself secure and backed up. It is highly recommended that you use a
+password manager to generate the passphrase and keep it safe. There will be no
+way to recover this key. You can find the key in your config directory.
+Enter passphrase for new root key with ID fa0e171:
+```
+
+Enter a passphrase when prompted.
+
+Once complete you will receive a response similar to that below
+
+```bash
+Finished initializing "dtr.west.us.se.dckr.org/se-jasatwal/catweb"
+Successfully signed dtr.west.us.se.dckr.org/se-jasatwal/catweb:latest
+```
+
+
 
 2. In a web browser navigate to https://dtr.west.us.se.dckr.org/. If prompted to log in, please do so
 
