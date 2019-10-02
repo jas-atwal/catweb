@@ -1,4 +1,4 @@
-# _Build, Share, Run, any app, anywhere_ with, **Docker Enterprise Platform**
+# _Build, Share, Run, any app, anywhere_, with **Docker Enterprise Platform**
 
 This demo will take you through a process of building and testing a web application locally using **Docker Desktop Enterprise** `(DDE)`, pushing the docker image up to our private registry for scanning, signing (using **Docker Content Trust** `(DCT)`, and promotions etc., in **Docker Trusted Registry** `(DTR)`, and then running the web application via an _orchestration_ engine of either _Swarm_ or vanilla upstream _Kubernetes_ through **Docker Universal Control Plane** `(UCP)`.
 
