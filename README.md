@@ -1,6 +1,8 @@
 # _Build, Share, Run, any app, anywhere_, with **Docker Enterprise Platform**
 
-This demo will take you through a process of building and testing a web application locally using **Docker Desktop Enterprise** `(DDE)`, pushing the docker image up to our private registry for scanning, signing (using **Docker Content Trust** `(DCT)`, and promotions etc., in **Docker Trusted Registry** `(DTR)`, and then running the web application via an _orchestration_ engine of either _Swarm_ or vanilla upstream _Kubernetes_ through **Docker Universal Control Plane** `(UCP)`.
+This demo will take you through a process of building and testing a web application locally.  We will be using **Docker Desktop Enterprise** `(DDE)` to scaffold an application, we'll then push the docker image up to a private image registry (signing the image using **Docker Content Trust** `(DCT)`), and automatically scan and promote the repository using **Docker Trusted Registry** `(DTR)`.  Once we have completed this phase of the development process we will run the web application **Docker Universal Control Plane** `(UCP)` on a _Kubernetes_ cluster.
+
+> (NB we can also use Docker Swarm as the orchestration engine (works great for Windows workloads as well as linux based workloads).
 
 ## Demo setup
 
@@ -8,7 +10,7 @@ This demo will take you through a process of building and testing a web applicat
 
 2. Ensure that you have login credentials for Docker Enerprise Platform 3.0 hosted at https://ucp.west.us.se.dckr.org/
 
-3. Create a repository named `catweb` in your `namespace` in Docker Trusted Registry at https://dtr.west.us.se.dckr.org/
+3. Create a `respository` name `catweb` within `DTR` https://dtr.west.us.se.dckr.org/ and set-up `mirroring` to `DockerHub`, and a `promotion` to a production environment.
 
 4. Set your env variable for `DTR` and `DCT` and login to `DTR`
 
@@ -33,12 +35,7 @@ and view it to ensure that it is set.
 $ echo $DOCKER_CONTENT_TRUST
 ```
 
-6. Open a terminal and `cd` to where you want to `git clone` the GitHub repo to, then `cd` to the app folder
-
-```bash
-$ git clone https://github.com/jas-atwal/catweb.git
-$ cd catweb
-```
+6. Install `Visual Studio Code` from https://code.visualstudio.com/download
 
 ## Running the demo
 
@@ -62,18 +59,29 @@ The basic flow is to intially build and run the app locally using Docker Desktop
 
 We have not had to learn how to create our Dockerfile(s), docker-compose.yaml, or create the folder and file structure, a bonus being that we have a skeleton application which is up and running in less than a minute.
 
-Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server application, we can build upon this and create our net new cloud native applications.  
+Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server application, we can build upon this and create our net new cloud native application for our project
 
 10. Within the Application Designer UI click `Stop` to stop the application, then click the back `<` chevron
 11. Click the `delete` icon, `confirm and remove application`, and exit `x` the Application Designer UI
 
 ## Build #2 - Docker Desktop Enterprise
 
-1. Open a terminal and `$ ls` within the `catweb` directory (explain what the Dockerfile and docker-compose file do!)
+1. Open a terminal window and change directory to where you want to clone the `catweb` sample `GitHub` repo too.
 
-> Notice that we have a `Dockerfile` and a `docker-compose.yaml`
+```bash
+$ cd ~/Documents/Docker/Demonstrations
+$ git clone https://github.com/jas-atwal/catweb.git
+```
 
-2. Open the `catweb` diretory within `VS Code`, open the `Dockerfile` and explain the how the app is `built`.  You can also show the source code if you wish
+List the files within the directory
+
+```bash
+$ ls
+```
+
+> Notice that we have a `Dockerfile` and a `docker-compose.yaml` file
+
+2. Within `VS Code` open the `catweb` folder, then open the `Dockerfile` and explain the how the app is `built`.  You can also show the source code if you wish
 
 3. `Build` the app (explain that Docker is going through each step within the Dockerfile in the specified order), and use the `docker image` command to view the details of the built image
 
@@ -82,13 +90,13 @@ $ docker build --no-cache -t catweb .
 $ docker image ls | grep catweb
 ```
 
-4. Within `VS Code`, open the `docker-compose` file and explain how it works.  Now lets run run the app and mount the local directory into the source code directory in the container as per the instructions within the `docker-compose` file.
+4. Now open the `docker-compose` file and explain how it works.  Let's run the app as per the instructions within within the `docker-compose` file.
 
 ```bash
 $ docker-compose up
 ```
 
-(Optional) You can also run the app within a container without having to use the `docker-compose.yaml` file by running the command below
+**As an alternative to the docker-compose file, you can run the app within a container using the command below.  If you want to try this, you will have to remove the existing container using `docker container rm catweb`
 
 ```bash
 $ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
@@ -100,13 +108,11 @@ View the running container using
 $ docker ps
 ```
 
-5. Open a web browser and show the app running at http://localhost:5001.  You will notice the images are not displaying!
+5. Open a web browser and show the app running at http://localhost:5000.  You will notice the images are not displaying!
 
 6. Stop the container `$ ^C `
 
-7. Switch back to `VS Code` and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
-
-8. Edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
+7. Within `VS Code` edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
 
 ```
 "https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
