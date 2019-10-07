@@ -144,7 +144,6 @@ $ docker-compose up
 ```bash
 $ docker stack deploy -c docker-compose.yml catweb
 $ docker container ls
-$ 
 ```
 
 10. Let's view the app at http://localhost:5000.  Notice how the `container ID` changes when you refresh the page.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
