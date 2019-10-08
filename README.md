@@ -97,11 +97,14 @@ $ docker image ls | grep catweb
 $ docker-compose up
 ```
 
-**As an alternative to the docker-compose file, you can run the app within a container using the command below.  If you want to try this, you will have to remove the existing container using `docker container rm catweb`
+**As an alternative to using the docker-compose file, you can run the app within a container using the command below.**
+**If you want to try this you will first have to remove the existing container using `docker container rm catweb`**
 
 ```bash
-$ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
+$ docker run -d -p 5000:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
 ```
+
+> $PWD is your current working directory i.e. `catweb`
 
 View the running container using
 
@@ -111,7 +114,7 @@ $ docker ps
 
 5. Open a web browser and show the app running at http://localhost:5000.  You will notice the images are not displaying!
 
-6. Stop the container `$ ^C `
+6. Stop the container `$ ^C ` using `control+c`
 
 7. Within `VS Code` open the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
 
@@ -144,7 +147,7 @@ $ docker-compose up
 
 > If done correctly you should notice that the images are now fixed when you refresh the web browser at http://localhost:5000
 
-8. Stop the container `$ ^C ` 
+8. Stop the container `$ ^C ` using `control+c`
 
 9. Now that we have a working app, let's test the running of the app within multiple containers (three in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` or `docker container ls`
 
@@ -177,8 +180,8 @@ $ docker tag catweb:latest $DTR/se-jasatwal/catweb:latest
 $ docker push $DTR/se-jasatwal/catweb:latest
 ```
 
-**Note**: Replace `se-jasatwal` with your own namespace you have within DTR
-**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server using 
+**Note**: Replace `se-jasatwal` with your own namespace you have within `DTR`
+**Note**: If you get an error saying you need to authenticate, you'll need to `log in` to `DTR` using 
 
 ```bash
 $ docker login $DTR -u <uname> -p <password>
@@ -200,7 +203,7 @@ Enter passphrase for new root key with ID fa0e171:
 
 Enter a passphrase when prompted.
 
-> Make note of this passphrase as it is not retrievable if forgotten.
+> **_Make note of this `passphrase` as it is not retrievable if forgotten._**
 
 Once complete you will receive a response similar to that below
 
@@ -247,7 +250,7 @@ $ kubectl expose deployment catweb --port=5000 --type=LoadBalancer
 $ kubectl get pod
 ```
 
-4. Bring back the details of the service so you copy the `EXTERNAL IP` which you will need in the next step
+4. Bring back the details of the service so that you can copy the `EXTERNAL IP` address which you will need in the next step
 
 ```bash
 $ kubectl get svc
