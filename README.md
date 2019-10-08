@@ -233,9 +233,10 @@ Now that the image has been pushed to our private registry, has been signed, sca
 1. Create a `Kubernetes deployment` and check it exists
 
 ```bash
-$ kubectl create deployment catweb --image=$DTR/se-prod-jasatwal/catweb
+$ kubectl create deployment catweb --image=$DTR/se-jasatwal/catweb
 $ kubectl get deploy
 ```
+> Where `se-jasatwal` is your namespace in `DTR`.
 > If you have not set the `DTR environment variable` please substitute `$DTR` with `dtr.west.us.se.dckr.org`
 
 2. Create a `Kubernetes service` exposing `port 5000` and using the `LoadBalancer`
