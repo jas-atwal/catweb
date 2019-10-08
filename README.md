@@ -258,7 +258,7 @@ $ kubectl get svc
 
 5. In a web browser navigate to http://<external_ip>:5000.  View your newly deployed production application running on a `Kubernetes cluster` on `AWS` via the `Docker Enterprise Platform`.
 
-> Congratulations!!
+> _**Congratulations!!**_
 
 **Docker Enterprise Platform - the only end-to-end secure software supply chain from dev to prod!**
 
@@ -291,7 +291,7 @@ $ rm -R ~/Documents/Docker/Demonstrations/app-designer/demoApp
 
 **Note**: The location of your `Application Designer` application files will differ from that above
 
-## ---------------------------------------------------------------------------------------------------------
+## ------------------------------------------------------------------------------------------
 
 ## Instructions for Deploying to Swarm
 
