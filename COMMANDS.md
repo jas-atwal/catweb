@@ -3,6 +3,13 @@
 export DTR=dtr.west.us.se.dckr.org
 echo $DTR
 
+download client bundle
+eval "$(<env.sh)"
+
+kubectl config current-context
+kubectl config get-contexts
+kubectl config use-context se-jasatwal
+
 docker login $DTR -u <uname> -p <password>
 
 export DOCKER_CONTENT_TRUST=1
