@@ -113,7 +113,7 @@ $ docker ps
 
 6. Stop the container `$ ^C `
 
-7. Within `VS Code` edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
+7. Within `VS Code` open the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
 
 ```
 "https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
@@ -130,35 +130,41 @@ $ docker ps
 "https://media.giphy.com/media/Jjo6WPW26zDdS/giphy.gif"
 ```
 
-**Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the `index.html` file, make sure to `cd` back into the `catweb` directory before updating the `app.py` file.
+**Note**: A simpler option is to copy the updated `app_new.py` within the `src` folder over the top of the existing `app.py` file within the `catweb` folder using.  Then check that the URL have changed.
 
-7. Run the app again using `docker-compose up`, you will see that the images are now fixed.
+```bash
+$ cp src/app_new.py app.py
+```
+
+7. Run the app again using `docker-compose up`
 
 ```bash
 $ docker-compose up
 ```
 
+> If done correctly you should notice that the images are now fixed when you refresh the web browser at http://localhost:5000
+
 8. Stop the container `$ ^C ` 
 
-9. We now have a working app! Let's test the running of the app within multiple containers (three in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` or `docker container ls`
+9. Now that we have a working app, let's test the running of the app within multiple containers (three in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` or `docker container ls`
 
 ```bash
 $ docker stack deploy -c docker-compose.yml catweb
 $ docker container ls
 ```
 
-10. Let's view the app at http://localhost:5000.  Notice how the `container ID` changes when you refresh the page.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
+10. Let's view the app at http://localhost:5000.  Refresh the browswer and notice the `Container ID` changes occassionally.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
 
-11. Let's bring one of the containers identified in step 10 down and then check to see there STATUS
+11. Let's bring one of the containers identified in step 10 down and then check to see there `STATUS`
 
 ```bash
 $ docker container kill <CONTAINER ID>
 $ docker ps
 ```
 
-> Notice how a new container has been stood up in place of the container that we bought down and has only been up a few seconds
+> Notice how a new container has been stood up in place of the container that we killed and has only been up a few seconds
 
-We are now ready to share the image using `Docker Hub` or `Docker Trusted Registry `.  In our demo we will use `Docker Trusted Registry`
+We are now ready to share the image using `Docker Trusted Registry `, during which we will also `sign` and `scan` the image for `vulnerabilities`.
 
 ## Share
 
@@ -194,6 +200,8 @@ Enter passphrase for new root key with ID fa0e171:
 
 Enter a passphrase when prompted.
 
+> Make note of this passphrase as it is not retrievable if forgotten.
+
 Once complete you will receive a response similar to that below
 
 ```bash
@@ -222,12 +230,12 @@ Now that the image has been pushed to our private registry, has been signed, sca
 1. Create a `Kubernetes deployment` and check it exists
 
 ```bash
-$ kubectl create deployment catweb --image=dtr.west.us.se.dckr.org/se-prod-jasatwal/catweb
+$ kubectl create deployment catweb --image=$DTR/se-prod-jasatwal/catweb
 $ kubectl get deploy
-
 ```
+> If you have not set the `DTR environment variable` please substitute `$DTR` with `dtr.west.us.se.dckr.org`
 
-2. Create a `Kubernetes service`
+2. Create a `Kubernetes service` exposing `port 5000` and using the `LoadBalancer`
 
 ```bash
 $ kubectl expose deployment catweb --port=5000 --type=LoadBalancer
@@ -239,17 +247,19 @@ $ kubectl expose deployment catweb --port=5000 --type=LoadBalancer
 $ kubectl get pod
 ```
 
-4. Bring back the details of the service so you copy the `EXTERNAL IP` which we will need in the next step
+4. Bring back the details of the service so you copy the `EXTERNAL IP` which you will need in the next step
 
 ```bash
 $ kubectl get svc
 ```
 
-5. In a web browser navigate to http://<external_ip>:5000.  View your newly deployed production application running on `AWS` via the `Docker Enterprise Platform`.
+5. In a web browser navigate to http://<external_ip>:5000.  View your newly deployed production application running on a `Kubernetes cluster` on `AWS` via the `Docker Enterprise Platform`.
 
 > Congratulations!!
 
-## Post Demo Clean-up
+**Docker Enterprise Platform - the only end-to-end secure software supply chain from dev to prod!**
+
+## Post Demo Clean-up (Needs updating)!
 
 **Note**: Do this after EACH demo
 
