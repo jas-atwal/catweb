@@ -76,6 +76,7 @@ $ git clone https://github.com/jas-atwal/catweb.git
 List the files within the directory
 
 ```bash
+$ cd catweb
 $ ls
 ```
 
