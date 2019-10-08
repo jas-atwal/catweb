@@ -6,18 +6,17 @@ app = Flask(__name__)
 
 # list of cat images
 images = [
-"https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
-"https://media.giphy.com/media/MCfhrrNN1goH6/giphy.gif",
-"https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif",
-"https://media.giphy.com/media/LqON4xbn2u0JDWRniQ/giphy.gif",
-"https://media.giphy.com/media/IWG1kktEJFFDy/giphy.gif",
-"https://media.giphy.com/media/QGwIkEl3QbIY0/giphy.gif",
-"https://media.giphy.com/media/2eKoCnqFwHpD5W7RW6/giphy.gif",
-"https://media.giphy.com/media/1BGwLa5CRz8pZK6bbH/giphy.gif",
-"https://media.giphy.com/media/11s7Ke7jcNxCHS/giphy.gif",
-"https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif",
-"https://media.giphy.com/media/Nm8ZPAGOwZUQM/giphy.gif",
-"https://media.giphy.com/media/Jjo6WPW26zDdS/giphy.gif"
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr01/15/9/anigif_enhanced-buzz-31540-1381844535-8.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr05/15/9/anigif_enhanced-buzz-26390-1381844163-18.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/10/anigif_enhanced-buzz-1376-1381846217-0.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/9/anigif_enhanced-buzz-3391-1381844336-26.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/10/anigif_enhanced-buzz-29111-1381845968-0.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/9/anigif_enhanced-buzz-3409-1381844582-13.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr02/15/9/anigif_enhanced-buzz-19667-1381844937-10.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr05/15/9/anigif_enhanced-buzz-26358-1381845043-13.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/9/anigif_enhanced-buzz-18774-1381844645-6.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr06/15/9/anigif_enhanced-buzz-25158-1381844793-0.gif",
+    "http://ak-hdl.buzzfed.com/static/2013-10/enhanced/webdr03/15/10/anigif_enhanced-buzz-11980-1381846269-1.gif"
 ]
 
 @app.route('/')
