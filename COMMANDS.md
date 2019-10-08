@@ -32,7 +32,7 @@ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
 
 ## COPY URLs
 ```bash
-cp ../app.py app.py
+cp ../app_new.py app.py
 
 docker-compose up
 
