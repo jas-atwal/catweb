@@ -1,6 +1,8 @@
 # _Build, Share, Run, any app, anywhere_, with **Docker Enterprise Platform**
 
-This demo will take you through a process of building and testing a web application locally using **Docker Desktop Enterprise** `(DDE)`, pushing the docker image up to our private registry for scanning, signing (using **Docker Content Trust** `(DCT)`, and promotions etc., in **Docker Trusted Registry** `(DTR)`, and then running the web application via an _orchestration_ engine of either _Swarm_ or vanilla upstream _Kubernetes_ through **Docker Universal Control Plane** `(UCP)`.
+This demo will take you through a process of building and testing a web application locally.  We will be using **Docker Desktop Enterprise** `(DDE)` to scaffold an application, we'll then push the docker image up to a private image registry (signing the image using **Docker Content Trust** `(DCT)`), and automatically scan and promote the repository using **Docker Trusted Registry** `(DTR)`.  Once we have completed this phase of the development process we will run the web application **Docker Universal Control Plane** `(UCP)` on a _Kubernetes_ cluster.
+
+> (NB we can also use Docker Swarm as the orchestration engine (works great for Windows workloads as well as linux based workloads).
 
 ## Demo setup
 
@@ -8,7 +10,7 @@ This demo will take you through a process of building and testing a web applicat
 
 2. Ensure that you have login credentials for Docker Enerprise Platform 3.0 hosted at https://ucp.west.us.se.dckr.org/
 
-3. Create a repository named `catweb` in your `namespace` in Docker Trusted Registry at https://dtr.west.us.se.dckr.org/
+3. Create a `respository` named `catweb` within `DTR` (https://dtr.west.us.se.dckr.org/) and set-up `mirroring` to `DockerHub`, a `promotion` to a production namespace, and optionally a webhook to Slack
 
 4. Set your env variable for `DTR` and `DCT` and login to `DTR`
 
@@ -33,12 +35,7 @@ and view it to ensure that it is set.
 $ echo $DOCKER_CONTENT_TRUST
 ```
 
-6. Open a terminal and `cd` to where you want to `git clone` the GitHub repo to, then `cd` to the app folder
-
-```bash
-$ git clone https://github.com/jas-atwal/catweb.git
-$ cd catweb
-```
+7. Install `Visual Studio Code` from https://code.visualstudio.com/download
 
 ## Running the demo
 
@@ -62,18 +59,29 @@ The basic flow is to intially build and run the app locally using Docker Desktop
 
 We have not had to learn how to create our Dockerfile(s), docker-compose.yaml, or create the folder and file structure, a bonus being that we have a skeleton application which is up and running in less than a minute.
 
-Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server application, we can build upon this and create our net new cloud native applications.  
+Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server application, we can build upon this and create our net new cloud native application for our project
 
 10. Within the Application Designer UI click `Stop` to stop the application, then click the back `<` chevron
 11. Click the `delete` icon, `confirm and remove application`, and exit `x` the Application Designer UI
 
 ## Build #2 - Docker Desktop Enterprise
 
-1. Open a terminal and `$ ls` within the `catweb` directory (explain what the Dockerfile and docker-compose file do!)
+1. Open a terminal window and change directory to where you want to clone the `catweb` sample `GitHub` repo too.
 
-> Notice that we have a `Dockerfile` and a `docker-compose.yaml`
+```bash
+$ cd ~/Documents/Docker/Demonstrations
+$ git clone https://github.com/jas-atwal/catweb.git
+```
 
-2. Open the `catweb` diretory within `VS Code`, open the `Dockerfile` and explain the how the app is `built`.  You can also show the source code if you wish
+List the files within the directory
+
+```bash
+$ ls
+```
+
+> Notice that we have a `Dockerfile` and a `docker-compose.yaml` file
+
+2. Within `VS Code` open the `catweb` folder, then open the `Dockerfile` and explain the how the app is `built`.  You can also show the source code if you wish
 
 3. `Build` the app (explain that Docker is going through each step within the Dockerfile in the specified order), and use the `docker image` command to view the details of the built image
 
@@ -82,13 +90,13 @@ $ docker build --no-cache -t catweb .
 $ docker image ls | grep catweb
 ```
 
-4. Within `VS Code`, open the `docker-compose` file and explain how it works.  Now lets run run the app and mount the local directory into the source code directory in the container as per the instructions within the `docker-compose` file.
+4. Now open the `docker-compose` file and explain how it works.  Let's `run` the app within a `container` using the built `image` as per the instructions within within the `docker-compose` file.
 
 ```bash
 $ docker-compose up
 ```
 
-(Optional) You can also run the app within a container without having to use the `docker-compose.yaml` file by running the command below
+**As an alternative to the docker-compose file, you can run the app within a container using the command below.  If you want to try this, you will have to remove the existing container using `docker container rm catweb`
 
 ```bash
 $ docker run -d -p 5001:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
@@ -100,13 +108,11 @@ View the running container using
 $ docker ps
 ```
 
-5. Open a web browser and show the app running at http://localhost:5001.  You will notice the images are not displaying!
+5. Open a web browser and show the app running at http://localhost:5000.  You will notice the images are not displaying!
 
 6. Stop the container `$ ^C `
 
-7. Switch back to `VS Code` and edit the `index.html` file in the `templates` directory. Usually I change it by using an attendee's name in the title e.g. "Mandy's Random Cat Gif's". Save your changes.
-
-8. Edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
+7. Within `VS Code` edit the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
 
 ```
 "https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
@@ -125,7 +131,7 @@ $ docker ps
 
 **Note**: If you using the terminal to make your edits, you will have done a `cd` into the `templates` directory to edit the `index.html` file, make sure to `cd` back into the `catweb` directory before updating the `app.py` file.
 
-7. Run the app again using `docker-compose up`, you will see that the images are now fixed and the title has also changed
+7. Run the app again using `docker-compose up`, you will see that the images are now fixed.
 
 ```bash
 $ docker-compose up
@@ -133,36 +139,31 @@ $ docker-compose up
 
 8. Stop the container `$ ^C ` 
 
-9. We have a working app, let's test the running of the app within multiple containers (three in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` and `docker container ls`
+9. We now have a working app! Let's test the running of the app within multiple containers (three in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` or `docker container ls`
 
 ```bash
 $ docker stack deploy -c docker-compose.yml catweb
+$ docker container ls
 ```
 
-10. Let's see the three running containers
+10. Let's view the app at http://localhost:5000.  Notice how the `container ID` changes when you refresh the page.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
+
+11. Let's bring one of the containers identified in step 10 down and then check to see there STATUS
 
 ```bash
+$ docker container kill <CONTAINER ID>
 $ docker ps
 ```
 
-11. Let's view the app at http://localhost:5001.  Notice how the `container ID` changes when you refresh the page.  This is because we are running two instances of the image in two separate containers and the traffic is being load balanced between the two.
-
-12. Let's bring one of the containers identified in step 10 down, and we will then check to see how many containers are running and for how long.
-
-```bash
-$ docker container kill <Conatiner ID>
-$ docker ps
-```
-
-> Notice how a new container has been stood up in place of the container that we bought down
+> Notice how a new container has been stood up in place of the container that we bought down and has only been up a few seconds
 
 We are now ready to share the image using `Docker Hub` or `Docker Trusted Registry `.  In our demo we will use `Docker Trusted Registry`
 
 ## Share
 
-Now that the docker image has been built and we have successfully tested the running of the `catweb` application locally, let's push it up to Docker Trusted Registry so that we can sign, scan, and promote the image from `dev` through to `production` for final deployment.
+Now that the docker image has been built and we have successfully tested the running of the `catweb` application locally, we can push the image up to `Docker Trusted Registry` so that we can sign, scan, and promote the image from `dev` through to `production` for final deployment.
 
-1. We need to `tag` the image and then `push` this tagged image to our private **Docker Trusted Registry** `(DTR)`.
+1. We need to `tag` the image and then `push` this tagged image to our private registry `(DTR)`.
 
 ```bash
 $ docker tag catweb:latest $DTR/se-jasatwal/catweb:latest
@@ -170,13 +171,12 @@ $ docker push $DTR/se-jasatwal/catweb:latest
 ```
 
 **Note**: Replace `se-jasatwal` with your own namespace you have within DTR
-**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server
+**Note**: If you get an error saying you need to authenticate, you'll need to log in to the DTR server using 
 
 ```bash
 $ docker login $DTR -u <uname> -p <password>
 ```
-
-The `DTR` which we are using for this demo is `dtr.west.us.se.dckr.org`
+> The `DTR` which we are using for this demo is `dtr.west.us.se.dckr.org`
 
 > If you have enabled `DOCKER_CONTENT_TRUST=1` as an `environment varibale` then the first time you `push` an image using `content trust` on your system, the session looks like this:
 
@@ -200,40 +200,51 @@ Finished initializing "dtr.west.us.se.dckr.org/se-jasatwal/catweb"
 Successfully signed dtr.west.us.se.dckr.org/se-jasatwal/catweb:latest
 ```
 
-2. In a web browser navigate to https://dtr.west.us.se.dckr.org/. If prompted to log in, please do so
+2. In a web browser navigate to https://dtr.west.us.se.dckr.org/. When prompted to log in, please do so
 
 Click on `Repositories` and show the image you just uploaded and discuss the automation of:
 
 ```text
 image signing
 image scanning,
-image promotions and
 image mirroring
+image promotions and
 webhooks
 ```
 
 ## Run
 
-Now that the image has been pushed to our private registry, has been signed, scanned, and promoted through relevant stages of our development lifcycle, Let's run the web application within a container on Kubernetes via Docker Unviversal Control Plane.
+Now that the image has been pushed to our private registry, has been signed, scanned, and promoted through to our production namespace, let's run the web application within a container on `Kubernetes` via **Docker Unviversal Control Plane** `UCP`.
 
-1. In a web browser navigate to https://ucp.west.us.se.dckr.org/. If prompted to log in, please do so
+> We can run the container using a `Kubernetes yaml` file or alternatively via the `command line`.  We will use the latter!
 
-2. From the left menu, click `Swarm`, then `Services`
+1. Create a `Kubernetes deployment` and check it exists
 
-3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
+```bash
+$ kubectl create deployment catweb --image=dtr.west.us.se.dckr.org/se-prod-jasatwal/catweb
+$ kubectl get deploy
 
-- Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:mandy`
-- Under `Network` select `Add Port+`
-- Enter the port numbers `5001`, and `5000` in the `source` and `target` fields respectively
-- Under `Labels` add two lables:
-	- `interlock.hostname` and `www`
-	- `interlock.domain` and `catweb.demo`
+```
 
-**Note**: Make sure to click the plus after each one
+2. Create a `Kubernetes service`
 
-4. Click `Create`
+```bash
+$ kubectl expose deployment catweb --port=5000 --type=LoadBalancer
+```
 
-5. After the container is successfully deployed, navigate in the web browser to http://www.catweb.demo. This will navigate to your newly deployed container running on AWS via Docker Enterprise Platform.
+3. Check to see if the container is running
+
+```bash
+$ kubectl get pod
+```
+
+4. Bring back the details of the service so you copy the `EXTERNAL IP` which we will need in the next step
+
+```bash
+$ kubectl get svc
+```
+
+5. In a web browser navigate to http://<external_ip>:5000.  View your newly deployed production application running on `AWS` via the `Docker Enterprise Platform`.
 
 > Congratulations!!
 
@@ -265,3 +276,31 @@ $ rm -R ~/Documents/Docker/Demonstrations/app-designer/demoApp
 ```
 
 **Note**: The location of your `Application Designer` application files will differ from that above
+
+## ---------------------------------------------------------------------------------------------------------
+
+## Instructions for Deploying to Swarm
+
+1. In a web browser navigate to https://ucp.west.us.se.dckr.org/. If prompted to log in, please do so
+
+2. From the left menu, click `Swarm`, then `Services`
+
+3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
+
+- Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:mandy`
+- Under `Network` select `Add Port+`
+- Enter the port numbers `5001`, and `5000` in the `source` and `target` fields respectively
+- Under `Labels` add two lables:
+	- `interlock.hostname` and `www`
+	- `interlock.domain` and `catweb.demo`
+
+**Note**: Make sure to click the plus after each one
+
+4. Click `Create`
+
+5. After the container is successfully deployed, navigate in the web browser to http://www.catweb.demo. This will navigate to your newly deployed container running on AWS via Docker Enterprise Platform.
+
+> Congratulations!!
+
+
+
