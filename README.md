@@ -2,13 +2,13 @@
 
 This demo will take you through a process of building and testing a web application locally.  We will be using **Docker Desktop Enterprise** `(DDE)` to scaffold an application, we'll then push the docker image up to a private image registry (signing the image using **Docker Content Trust** `(DCT)`), and automatically scan and promote the repository using **Docker Trusted Registry** `(DTR)`.  Once we have completed this phase of the development process we will run the web application **Docker Universal Control Plane** `(UCP)` on a **_Kubernetes_** cluster.
 
-> (NB we can also use Docker Swarm as the orchestration engine (works great for Windows workloads as well as linux based workloads).
+> (NB we can also use Docker Swarm as the orchestration engine (works great for Windows workloads as well as Linux based workloads).
 
 ## Demo setup
 
 1. Ensure Docker Desktop Enterprise is installed on your machine. If you are using Docker for Windows or Docker for Mac, you're good to go.  If not, you can download DDE from https://hub.docker.com/editions/community/docker-desktop-ent
 
-2. Ensure that you have login credentials for Docker Enerprise Platform 3.0 hosted at https://ucp.west.us.se.dckr.org/
+2. Ensure that you have login credentials for Docker Enterprise Platform 3.0 hosted at https://ucp.west.us.se.dckr.org/
 
 3. Create a `respository` named `catweb` within `DTR` (https://dtr.west.us.se.dckr.org/) and set-up `mirroring` to `DockerHub`, a `promotion` to a production namespace, and optionally a webhook to `Slack`.
 
@@ -21,6 +21,7 @@ $ docker login $DTR -u <uname> -p <password>
 ```
 
 5. **Optional** - _Enable and disable content trust per-shell or per-invocation_
+
 In a shell, you can enable content trust by setting the DOCKER_CONTENT_TRUST environment variable. Enabling per-shell is useful because you can have one shell configured for trusted operations and another terminal shell for untrusted operations. You can also add this declaration to your shell profile to have it turned on always by default.
 
 To enable `docker content trust` in a bash shell enter the following commands to set the env var and view it
@@ -39,7 +40,7 @@ There are two parts to the demo.  The first part will take you through the proce
 
 This demo is designed to show a _build_, _share_, _run_ Docker workflow using a simple Flask-based web app, `catweb`.
 
-The basic flow is to intially build and run the app locally using Docker Desktop Enterprise, modify the web template to show how hot mounting a volume works, pushing the image to `Docker Trusted Registry` _optionally_ signing the image with `Docker Trusted Registry`, then deploying onto `AWS` using `Docker Universal Control Plane`.
+The basic flow is to initially build and run the app locally using Docker Desktop Enterprise, modify the web template to show how hot mounting a volume works, pushing the image to `Docker Trusted Registry` _optionally_ signing the image with `Docker Trusted Registry`, then deploying onto `AWS` using `Docker Universal Control Plane`.
 
 ## Build #1 - Application Designer
 
@@ -161,7 +162,7 @@ Creating network catweb_default
 Creating service catweb_web
 ```
 
-10. Let's view the app at http://localhost:5000.  Refresh the browser and notice the `Container ID` changes occassionally.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
+10. Let's view the app at http://localhost:5000.  Refresh the browser and notice the `Container ID` changes occasionally.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
 
 11. View the three running containers
 
@@ -173,7 +174,7 @@ a6d46717c3e1        catweb:latest       "python3 /usr/src/ap…"   4 minutes ago
 17665d8af3c3        catweb:latest       "python3 /usr/src/ap…"   4 minutes ago       Up 4 minutes        5000/tcp            catweb_web.3.azc8ed275lfeyzwfd1xap38rd
 ```
 
-11. Let's bring one of the containers identified in step 11 down and then check to see there `STATUS`
+11. Let's bring one of the containers identified in step 11 down and then check to see their `STATUS`
 
 ```bash
 $ docker container kill 438d7ec74910
@@ -226,7 +227,7 @@ Successfully signed dtr.west.us.se.dckr.org/se-jasatwal/catweb:latest
 
 > The `DTR` which we are using for this demo is `dtr.west.us.se.dckr.org`
 
-> If you have enabled `DOCKER_CONTENT_TRUST=1` as an `environment varibale` then the first time you `push` an image using `content trust` on your system, the session looks like this:
+> If you have enabled `DOCKER_CONTENT_TRUST=1` as an `environment variable` then the first time you `push` an image using `content trust` on your system, the session looks like this:
 
 ```bash
 Signing and pushing trust metadata
@@ -266,7 +267,7 @@ webhooks
 
 ## Run
 
-Now that the image has been pushed to our private registry, has been signed, scanned, and promoted through to our production namespace, let's run the web application within a container on `Kubernetes` via **Docker Unviversal Control Plane** `UCP`.
+Now that the image has been pushed to our private registry, has been signed, scanned, and promoted through to our production namespace, let's run the web application within a container on `Kubernetes` via **Docker Universal Control Plane** `UCP`.
 
 > We can run the container using a `Kubernetes yaml` file or alternatively via the `command line`.  We will use the latter!
 
@@ -315,7 +316,7 @@ catweb       LoadBalancer   10.96.33.124   a3c5da531eb2111e9a6fb0242ac11000-7576
 
 ## Congratulations!!! :tada:
 
-**You have successcully _containerised an application, tested it locally, pushed it up to a private registry, signed, scanned, and promoted the image, then deployed the application to Kubernetes_.   All using the Docker Enterprise Platform - the only end-to-end secure software supply chain from DEV to PROD!** :grin:
+**You have successfully _containerised an application, tested it locally, pushed it up to a private registry, signed, scanned, and promoted the image, then deployed the application to Kubernetes_.   All using the Docker Enterprise Platform - the only end-to-end secure software supply chain from DEV to PROD!** :grin:
 
 
 
@@ -360,7 +361,7 @@ $ rm -R ~/Documents/Docker/Demonstrations/app-designer/demoApp
 
 3. Click the `Create` button and fill in the following values replacing `se-jasatwal` with your `namespace`
 
-- Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:mandy`
+- Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:latest`
 - Under `Network` select `Add Port+`
 - Enter the port numbers `5001`, and `5000` in the `source` and `target` fields respectively
 - Under `Labels` add two lables:
