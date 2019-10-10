@@ -311,7 +311,7 @@ catweb       LoadBalancer   10.96.33.124   a3c5da531eb2111e9a6fb0242ac11000-7576
 
 6. Show `UCP Dashboard` and navigate around the aspects such as `Access Control`, `Kubernetes Services` and `Pods` etc.
 
-![Image of DTR Repo] (/images/ucp.png)
+![Image of UCP](/images/ucp.png)
 
 ## Congratulations!!! :tada:
 
