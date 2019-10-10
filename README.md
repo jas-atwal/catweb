@@ -12,7 +12,7 @@ This demo will take you through a process of building and testing a web applicat
 
 3. Create a `respository` named `catweb` within `DTR` (https://dtr.west.us.se.dckr.org/) and set-up `mirroring` to `DockerHub`, a `promotion` to a production namespace, and optionally a webhook to `Slack`.
 
-4. Set your env variable for `DTR` and login to `DTR`
+4. Within a `terminal` set your env variable for `DTR` and login to `DTR`
 
 ```bash
 $ export DTR=dtr.west.us.se.dckr.org
@@ -23,16 +23,12 @@ $ docker login $DTR -u <uname> -p <password>
 5. **Optional** - _Enable and disable content trust per-shell or per-invocation_
 In a shell, you can enable content trust by setting the DOCKER_CONTENT_TRUST environment variable. Enabling per-shell is useful because you can have one shell configured for trusted operations and another terminal shell for untrusted operations. You can also add this declaration to your shell profile to have it turned on always by default.
 
-To enable content trust in a bash shell enter the following command:
+To enable `docker content trust` in a bash shell enter the following commands to set the env var and view it
 
 ```bash
 $ export DOCKER_CONTENT_TRUST=1
-```
-
-and view it to ensure that it is set.
-
-```bash
 $ echo $DOCKER_CONTENT_TRUST
+1
 ```
 
 7. Install `Visual Studio Code` from https://code.visualstudio.com/download
@@ -71,6 +67,13 @@ Now that we have our scaffolded (skeleton) Flash / NGINX / MySQL Server applicat
 ```bash
 $ cd ~/Documents/Docker/Demonstrations
 $ git clone https://github.com/jas-atwal/catweb.git
+Cloning into 'catweb'...
+remote: Enumerating objects: 6, done.
+remote: Counting objects: 100% (6/6), done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 291 (delta 2), reused 0 (delta 0), pack-reused 285
+Receiving objects: 100% (291/291), 59.90 KiB | 285.00 KiB/s, done.
+Resolving deltas: 100% (161/161), done.
 ```
 
 List the files within the directory
@@ -78,6 +81,8 @@ List the files within the directory
 ```bash
 $ cd catweb
 $ ls
+COMMANDS.md             README.md               catweb-deployment.yaml  expose-service.yaml     src
+Dockerfile              app.py                  docker-compose.yml      requirements.txt        templates
 ```
 
 > Notice that we have a `Dockerfile` and a `docker-compose.yaml` file
@@ -88,81 +93,101 @@ $ ls
 
 ```bash
 $ docker build --no-cache -t catweb .
-$ docker image ls | grep catweb
+Successfully built fd80b366dad9
+Successfully tagged catweb:latest
+Tagging alpine@sha256:72c42ed48c3a2db31b7dafe17d275b634664a708d901ec9fd57b1529280f01fb as alpine:latest
 ```
 
-4. Now open the `docker-compose` file and explain how it works.  Let's `run` the app within a `container` using the built `image` as per the instructions within within the `docker-compose` file.
+Let's view the generated `image`
+
+```bash
+$ docker image ls | grep catweb
+catweb                                       latest                    fd80b366dad9        2 minutes ago       74.1MB
+```
+
+4. Now that the image has been built, we can run the image as a container using `docker-compose`.  Open the `docker-compose.yaml` file within `VS Code` and describe the contents.  Now let's `run` the app on `Docker Swarm` as the `orchestration engine` using the commands contained within the  `docker-compose` file.
 
 ```bash
 $ docker-compose up
+WARNING: The Docker Engine you're using is running in swarm mode.
+
+Compose does not use swarm mode to deploy services to multiple nodes in a swarm. All containers will be scheduled on the current node.
+
+To deploy your application across the swarm, use `docker stack deploy`.
+
+Creating catweb_web_1 ... done
+Attaching to catweb_web_1
+web_1  |  * Serving Flask app "app" (lazy loading)
+web_1  |  * Environment: development
+web_1  |  * Debug mode: on
+web_1  |  * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+web_1  |  * Restarting with stat
+web_1  |  * Debugger is active!
+web_1  |  * Debugger PIN: 316-525-960
 ```
 
-**As an alternative to using the docker-compose file, you can run the app within a container using the command below.**
-**If you want to try this you will first have to remove the existing container using `docker container rm catweb`**
-
-```bash
-$ docker run -d -p 5000:5000 --name catweb -v $PWD:/usr/src/app catweb:latest
-```
-
-> $PWD is your current working directory i.e. `catweb`
-
-View the running container using
+Open a second `terminal` and view the running container using
 
 ```bash
 $ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS                    NAMES
+7c9ba2ff21b2        catweb_web          "python3 /usr/src/ap…"   About a minute ago   Up About a minute   0.0.0.0:5000->5000/tcp   catweb_web_1
 ```
 
-5. Open a web browser and show the app running at http://localhost:5000.  You will notice the images are not displaying!
+5. Open a web browser and show the app running at http://localhost:5000
 
-6. Stop the container `$ ^C ` using `control+c`
+6. Open the `templates/index.html` file within `VS Code` and update the `html` tag `<h4>Catweb - Curated Cat Gifs!</h4>` by adding your name
 
-7. Within `VS Code` open the `app.py` file in the root `catweb` directory, delete the URL's and replace them with the following.  Save your changes.
-
-```
-"https://media.giphy.com/media/H4DjXQXamtTiIuCcRU/giphy.gif",
-"https://media.giphy.com/media/MCfhrrNN1goH6/giphy.gif",
-"https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif",
-"https://media.giphy.com/media/LqON4xbn2u0JDWRniQ/giphy.gif",
-"https://media.giphy.com/media/IWG1kktEJFFDy/giphy.gif",
-"https://media.giphy.com/media/QGwIkEl3QbIY0/giphy.gif",
-"https://media.giphy.com/media/2eKoCnqFwHpD5W7RW6/giphy.gif",
-"https://media.giphy.com/media/1BGwLa5CRz8pZK6bbH/giphy.gif",
-"https://media.giphy.com/media/11s7Ke7jcNxCHS/giphy.gif",
-"https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif",
-"https://media.giphy.com/media/Nm8ZPAGOwZUQM/giphy.gif",
-"https://media.giphy.com/media/Jjo6WPW26zDdS/giphy.gif"
+```html
+<h4>Catweb - Jas' Curated Cat Gifs!</h4>
 ```
 
-**Note**: A simpler option is to copy the updated `app_new.py` within the `src` folder over the top of the existing `app.py` file within the `catweb` folder using.  Then check that the URL have changed.
+7. `Refresh` the web page at http://localhost:5000 and notice the change.
+
+8. Stop the container using `CTRL+C`
 
 ```bash
-$ cp src/app_new.py app.py
+^CGracefully stopping... (press Ctrl+C again to force)
+Stopping catweb_web_1 ... done
 ```
 
-7. Run the app again using `docker-compose up`
+8. Let's test the running of the app within multiple containers (three in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` or `docker container ls`
+
+**Note** We can also run the containers locally using _Kubernetes_ as the orchestrator
 
 ```bash
-$ docker-compose up
-```
-
-> If done correctly you should notice that the images are now fixed when you refresh the web browser at http://localhost:5000
-
-8. Stop the container `$ ^C ` using `control+c`
-
-9. Now that we have a working app, let's test the running of the app within multiple containers (three in our case) using `docker stack deploy`, and `docker swarm` for orchestration.  We can check the running containers using `docker ps` or `docker container ls`
-
-```bash
-$ docker stack deploy -c docker-compose.yml catweb
-$ docker container ls
+$ docker stack deploy -c docker-compose-prod.yml catweb 
+Creating network catweb_default
+Creating service catweb_web
 ```
 
 10. Let's view the app at http://localhost:5000.  Refresh the browswer and notice the `Container ID` changes occassionally.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
 
-11. Let's bring one of the containers identified in step 10 down and then check to see there `STATUS`
+11. View the three running containers
 
 ```bash
-$ docker container kill <CONTAINER ID>
+$ docker ps             
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+438d7ec74910        catweb:latest       "python3 /usr/src/ap…"   4 minutes ago       Up 4 minutes        5000/tcp            catweb_web.1.5bqnigtauc6ewd1jrts10lm7v
+a6d46717c3e1        catweb:latest       "python3 /usr/src/ap…"   4 minutes ago       Up 4 minutes        5000/tcp            catweb_web.2.uvcfnuaxsyg0wffosupokrt5q
+17665d8af3c3        catweb:latest       "python3 /usr/src/ap…"   4 minutes ago       Up 4 minutes        5000/tcp            catweb_web.3.azc8ed275lfeyzwfd1xap38rd
+```
+
+11. Let's bring one of the containers identified in step 11 down and then check to see there `STATUS`
+
+```bash
+$ docker container kill 438d7ec74910
+438d7ec74910
+```
+
+12. Let's check the running containers
+
+```bash
 $ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES
+8610e3297c89        catweb:latest       "python3 /usr/src/ap…"   8 seconds ago       Up 4 seconds        5000/tcp            catweb_web.1.p9o12hs072rbzfy27cjm10ocr
+a6d46717c3e1        catweb:latest       "python3 /usr/src/ap…"   5 minutes ago       Up 5 minutes        5000/tcp            catweb_web.2.uvcfnuaxsyg0wffosupokrt5q
+17665d8af3c3        catweb:latest       "python3 /usr/src/ap…"   5 minutes ago       Up 5 minutes        5000/tcp            catweb_web.3.azc8ed275lfeyzwfd1xap38rd
 ```
 
 > Notice how a new container has been stood up in place of the container that we killed and has only been up a few seconds
@@ -173,19 +198,32 @@ We are now ready to share the image using `Docker Trusted Registry `, during whi
 
 Now that the docker image has been built and we have successfully tested the running of the `catweb` application locally, we can push the image up to `Docker Trusted Registry` so that we can sign, scan, and promote the image from `dev` through to `production` for final deployment.
 
-1. We need to `tag` the image and then `push` this tagged image to our private registry `(DTR)`.
+1. We need to `tag` the image and then `push` this tagged image to our private registry `(DTR)` ensuring that you use your own namespace (replace se-jasatwal with your namespace)
 
 ```bash
 $ docker tag catweb:latest $DTR/se-jasatwal/catweb:latest
-$ docker push $DTR/se-jasatwal/catweb:latest
+$ docker image ls | grep catweb                          
+catweb_web                                   latest                    cc5142167446        51 minutes ago      74.1MB
+catweb                                       latest                    ebbdcec5a92d        About an hour ago   74.1MB
+dtr.west.us.se.dckr.org/se-jasatwal/catweb   latest                    ebbdcec5a92d        About an hour ago   74.1MB
 ```
-
-**Note**: Replace `se-jasatwal` with your own namespace you have within `DTR`
-**Note**: If you get an error saying you need to authenticate, you'll need to `log in` to `DTR` using 
 
 ```bash
-$ docker login $DTR -u <uname> -p <password>
+$ docker push $DTR/se-jasatwal/catweb:latest
+The push refers to repository [dtr.west.us.se.dckr.org/se-jasatwal/catweb]
+aa9ff091b287: Pushed 
+164e79b62389: Pushed 
+2f6e52a272df: Pushed 
+8d4536d51aeb: Pushed 
+13806d62f1e3: Pushed 
+226cecc8e243: Pushed 
+03901b4a2ea8: Layer already exists 
+latest: digest: sha256:2d9db17f7849327fe7c53e5e90e3b9c7398820acd189bc24a97536f59742f3c3 size: 1783
+Signing and pushing trust metadata
+Enter passphrase for repository key with ID 7d9b31d: 
+Successfully signed dtr.west.us.se.dckr.org/se-jasatwal/catweb:latest
 ```
+
 > The `DTR` which we are using for this demo is `dtr.west.us.se.dckr.org`
 
 > If you have enabled `DOCKER_CONTENT_TRUST=1` as an `environment varibale` then the first time you `push` an image using `content trust` on your system, the session looks like this:
@@ -234,7 +272,9 @@ Now that the image has been pushed to our private registry, has been signed, sca
 
 ```bash
 $ kubectl create deployment catweb --image=$DTR/se-jasatwal/catweb
+deployment.apps/catweb created
 $ kubectl get deploy | grep catweb
+catweb      1/1     1            1           30s
 ```
 > Where `se-jasatwal` is your namespace in `DTR`.
 > If you have not set the `DTR environment variable` please substitute `$DTR` with `dtr.west.us.se.dckr.org`
@@ -243,13 +283,14 @@ $ kubectl get deploy | grep catweb
 
 ```bash
 $ kubectl expose deployment catweb --port=5000 --type=LoadBalancer
+service/catweb exposed
 ```
 
 3. Check to see if the container is running
 
 ```bash
-$ kubectl get pod
 $ kubectl get pod | grep catweb
+catweb-5c6d4b9c95-z8f4f      1/1     Running            0          5m49s
 ```
 
 4. Bring back the details of the service so that you can copy the `EXTERNAL IP` address which you will need in the next step
@@ -260,13 +301,19 @@ $ kubectl get svc | grep catweb
 catweb       LoadBalancer   10.96.33.124   a3c5da531eb2111e9a6fb0242ac11000-757615726.us-west-2.elb.amazonaws.com   5000:35435/TCP   3h27m
 ```
 
+> If the EXTERNAL_IP is showing as pending, please wait a few seconds and run the `kubectl get svc | grep catweb` command again until it returns a string as above.
+
 5. In a web browser navigate to http://<external_ip>:5000.  View your newly deployed production application running on a `Kubernetes cluster` on `AWS` via the `Docker Enterprise Platform`.
 
-> external_ip address in the example above being _a3c5da531eb2111e9a6fb0242ac11000-757615726.us-west-2.elb.amazonaws.com_
+> NOTE: the external_ip address in the example above is _a3c5da531eb2111e9a6fb0242ac11000-757615726.us-west-2.elb.amazonaws.com_
 
 ## Congratulations!!! :tada:
 
 **You have successcully _containerised an application, tested it locally, pushed it up to a private registry, signed, scanned, and promoted the image, then deployed the application to Kubernetes_.   All using the Docker Enterprise Platform - the only end-to-end secure software supply chain from DEV to PROD!** :grin:
+
+
+
+
 
 ## Post Demo Clean-up (Needs updating)!
 
@@ -297,7 +344,7 @@ $ rm -R ~/Documents/Docker/Demonstrations/app-designer/demoApp
 
 **Note**: The location of your `Application Designer` application files will differ from that above
 
-## ------------------------------------------------------------------------------------------
+## --------------------------------------------------------------------------
 
 ## Instructions for Deploying to Swarm
 
