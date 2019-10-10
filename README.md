@@ -318,11 +318,7 @@ catweb       LoadBalancer   10.96.33.124   a3c5da531eb2111e9a6fb0242ac11000-7576
 
 **You have successfully _containerised an application, tested it locally, pushed it up to a private registry, signed, scanned, and promoted the image, then deployed the application to Kubernetes_.   All using the Docker Enterprise Platform - the only end-to-end secure software supply chain from DEV to PROD!** :grin:
 
-
-
-
-
-## Post Demo Clean-up (Needs updating)!
+## Post Demo Clean-up!
 
 **Note**: Do this after EACH demo
 
@@ -331,17 +327,21 @@ catweb       LoadBalancer   10.96.33.124   a3c5da531eb2111e9a6fb0242ac11000-7576
 3. Remove all images and containers
 
 ```bash
-$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
-$ docker stack rm catweb
-$ docker container rm catweb -f
-$ docker image rm catweb
 $ docker image ls | grep catweb
+$ docker image rm dtr.west.us.se.dckr.org/se-jasatwal/catweb
+$ docker image rm catweb
+$ docker ps -a
+7c9ba2ff21b2
+$ docker container rm 7c9ba2ff21b2
+$ kubectl delete deploy catweb
+$ kubectl delete svc catweb
+$ kubectl get pods
+catweb-5c6d4b9c95-z8f4f
+$ kubectl delete pod catweb-5c6d4b9c95-z8f4f
 $ docker image prune -a
 $ cd ..
-$ rm -R ~/Documents/Docker/Demonstrations/catweb/
+$ rm -R ~$PWD/catweb/
 ```
-
-**Note**: The location of your `catweb` application files will differ from that above
 
 4. Remove the `demoApp` application
 
@@ -363,7 +363,7 @@ $ rm -R ~/Documents/Docker/Demonstrations/app-designer/demoApp
 
 - Image name: `dtr.west.us.se.dckr.org/se-jasatwal/catweb:latest`
 - Under `Network` select `Add Port+`
-- Enter the port numbers `5001`, and `5000` in the `source` and `target` fields respectively
+- Enter the port numbers `5000`, and `5000` in the `source` and `target` fields respectively
 - Under `Labels` add two lables:
 	- `interlock.hostname` and `www`
 	- `interlock.domain` and `catweb.demo`
@@ -374,7 +374,4 @@ $ rm -R ~/Documents/Docker/Demonstrations/app-designer/demoApp
 
 5. After the container is successfully deployed, navigate in the web browser to http://www.catweb.demo. This will navigate to your newly deployed container running on AWS via Docker Enterprise Platform.
 
-> Congratulations!!
-
-
-
+> Congratulations!! :tada:
