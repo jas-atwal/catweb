@@ -309,6 +309,10 @@ catweb       LoadBalancer   10.96.33.124   a3c5da531eb2111e9a6fb0242ac11000-7576
 
 > NOTE: the external_ip address in the example above is _a3c5da531eb2111e9a6fb0242ac11000-757615726.us-west-2.elb.amazonaws.com_
 
+6. Show `UCP Dashboard` and navigate around the aspects such as `Access Control`, `Kubernetes Services` and `Pods` etc.
+
+![Image of DTR Repo] (/images/ucp.png)
+
 ## Congratulations!!! :tada:
 
 **You have successcully _containerised an application, tested it locally, pushed it up to a private registry, signed, scanned, and promoted the image, then deployed the application to Kubernetes_.   All using the Docker Enterprise Platform - the only end-to-end secure software supply chain from DEV to PROD!** :grin:
