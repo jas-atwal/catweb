@@ -1,10 +1,11 @@
 version: '3.3'
 services:
   web:
-    image: catweb:latest
+    build: .
     ports:
       - "5000:5000"
-    deploy:
-      replicas: 3
-      restart_policy:
-        condition: on-failure
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - FLASK_ENV=development
+
