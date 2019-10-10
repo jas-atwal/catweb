@@ -161,7 +161,7 @@ Creating network catweb_default
 Creating service catweb_web
 ```
 
-10. Let's view the app at http://localhost:5000.  Refresh the browswer and notice the `Container ID` changes occassionally.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
+10. Let's view the app at http://localhost:5000.  Refresh the browser and notice the `Container ID` changes occassionally.  This is because we are running three instances of the application in three separate networked containers and the traffic is being load balanced between them.
 
 11. View the three running containers
 
@@ -261,6 +261,8 @@ image mirroring
 image promotions and
 webhooks
 ```
+
+![Image of DTR Repo] (/images/sign_scan.png)
 
 ## Run
 
