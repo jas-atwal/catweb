@@ -262,7 +262,7 @@ image promotions and
 webhooks
 ```
 
-![Image of DTR Repo] (/images/sign_scan.png)
+![Image of DTR Repo](/images/sign_scan.png)
 
 ## Run
 
