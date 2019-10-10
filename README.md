@@ -10,9 +10,9 @@ This demo will take you through a process of building and testing a web applicat
 
 2. Ensure that you have login credentials for Docker Enerprise Platform 3.0 hosted at https://ucp.west.us.se.dckr.org/
 
-3. Create a `respository` named `catweb` within `DTR` (https://dtr.west.us.se.dckr.org/) and set-up `mirroring` to `DockerHub`, a `promotion` to a production namespace, and optionally a webhook to Slack
+3. Create a `respository` named `catweb` within `DTR` (https://dtr.west.us.se.dckr.org/) and set-up `mirroring` to `DockerHub`, a `promotion` to a production namespace, and optionally a webhook to `Slack`.
 
-4. Set your env variable for `DTR` and `DCT` and login to `DTR`
+4. Set your env variable for `DTR` and login to `DTR`
 
 ```bash
 $ export DTR=dtr.west.us.se.dckr.org
@@ -214,7 +214,7 @@ Successfully signed dtr.west.us.se.dckr.org/se-jasatwal/catweb:latest
 
 2. In a web browser navigate to https://dtr.west.us.se.dckr.org/. When prompted to log in, please do so
 
-Click on `Repositories` and show the image you just uploaded and discuss the automation of:
+Click on `Repositories` and within the `Filter by: All Namespaces` enter your `namespace` name, select the `catweb` repositories and select the `tag` first to show the image that you just uploaded.  Then discuss the automation of:
 
 ```text
 image signing
@@ -230,16 +230,16 @@ Now that the image has been pushed to our private registry, has been signed, sca
 
 > We can run the container using a `Kubernetes yaml` file or alternatively via the `command line`.  We will use the latter!
 
-1. Create a `Kubernetes deployment` and check it exists
+1. Create a `Kubernetes deployment` using the `image` that you pushed up to `DTR` and check it exists
 
 ```bash
 $ kubectl create deployment catweb --image=$DTR/se-jasatwal/catweb
-$ kubectl get deploy
+$ kubectl get deploy | grep catweb
 ```
 > Where `se-jasatwal` is your namespace in `DTR`.
 > If you have not set the `DTR environment variable` please substitute `$DTR` with `dtr.west.us.se.dckr.org`
 
-2. Create a `Kubernetes service` exposing `port 5000` and using the `LoadBalancer`
+2. Create a `Kubernetes service` exposing `port 5000` and using type `LoadBalancer`
 
 ```bash
 $ kubectl expose deployment catweb --port=5000 --type=LoadBalancer
@@ -249,19 +249,24 @@ $ kubectl expose deployment catweb --port=5000 --type=LoadBalancer
 
 ```bash
 $ kubectl get pod
+$ kubectl get pod | grep catweb
 ```
 
 4. Bring back the details of the service so that you can copy the `EXTERNAL IP` address which you will need in the next step
 
 ```bash
 $ kubectl get svc
+$ kubectl get svc | grep catweb
+catweb       LoadBalancer   10.96.33.124   a3c5da531eb2111e9a6fb0242ac11000-757615726.us-west-2.elb.amazonaws.com   5000:35435/TCP   3h27m
 ```
 
 5. In a web browser navigate to http://<external_ip>:5000.  View your newly deployed production application running on a `Kubernetes cluster` on `AWS` via the `Docker Enterprise Platform`.
 
-> _**Congratulations!!**_
+> external_ip address in the example above being _a3c5da531eb2111e9a6fb0242ac11000-757615726.us-west-2.elb.amazonaws.com_
 
-**Docker Enterprise Platform - the only end-to-end secure software supply chain from dev to prod!**
+## Congratulations!!! :tada:
+
+**You have successcully _containerised an application, tested it locally, pushed it up to a private registry, signed, scanned, and promoted the image, then deployed the application to Kubernetes_.   All using the Docker Enterprise Platform - the only end-to-end secure software supply chain from DEV to PROD!** :grin:
 
 ## Post Demo Clean-up (Needs updating)!
 
