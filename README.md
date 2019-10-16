@@ -314,6 +314,52 @@ catweb       LoadBalancer   10.96.33.124   a3c5da531eb2111e9a6fb0242ac11000-7576
 
 ![Image of UCP](/images/ucp.png)
 
+7. Let's scale the application to provide high availability.  Replicas can be specificed within the _Kubernetes_ yaml file, however you can also do this via the command line interface.  Let's increase the number of running containers hosting an instance of the application to five.
+
+```bash
+$ kubectl scale --replicas=5 deployment/catweb
+deployment.extensions/catweb scaled
+```
+
+8. Now let's describe the deployment to view how many ReplicaSets we have, we are expecting five `(5/5 replicas created)`
+
+```bash
+$ kubectl describe deployment catweb
+Name:                   catweb
+Namespace:              se-jasatwal
+CreationTimestamp:      Mon, 14 Oct 2019 12:50:41 +0100
+Labels:                 app=catweb
+Annotations:            deployment.kubernetes.io/revision: 1
+Selector:               app=catweb
+Replicas:               5 desired | 5 updated | 5 total | 5 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  25% max unavailable, 25% max surge
+Pod Template:
+  Labels:  app=catweb
+  Containers:
+   catweb:
+    Image:        dtr.west.us.se.dckr.org/se-jasatwal/catweb
+    Port:         <none>
+    Host Port:    <none>
+    Environment:  <none>
+    Mounts:       <none>
+  Volumes:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Progressing    True    NewReplicaSetAvailable
+  Available      True    MinimumReplicasAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   catweb-5c6d4b9c95 (5/5 replicas created)
+Events:
+  Type    Reason             Age    From                   Message
+  ----    ------             ----   ----                   -------
+  Normal  ScalingReplicaSet  5m25s  deployment-controller  Scaled up replica set catweb-5c6d4b9c95 to 5
+```
+
+> Review the `Events` section towards the bottom of the output.  We have successfully scaled out to five ReplicaSets.
+
 ## Congratulations!!! :tada:
 
 **You have successfully _containerised an application, tested it locally, pushed it up to a private registry, signed, scanned, and promoted the image, then deployed the application to Kubernetes_.   All using the Docker Enterprise Platform - the only end-to-end secure software supply chain from DEV to PROD!** :grin:
