@@ -1,8 +1,9 @@
 # Use Alpine as base
 FROM alpine:latest
 
-# Maintainer
-MAINTAINER jas.atwal@docker.com
+# Metadata
+LABEL os.version="3.10"
+LABEL maintainer="jas.atwal@docker.com"
 
 # Install python and pip
 RUN apk add --no-cache --update python3
