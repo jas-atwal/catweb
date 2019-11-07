@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catweb-deployment
+  labels:
+    app: catweb-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: catweb
+  template:
+    metadata:
+      labels:
+        app: catweb
+    spec:
+      containers:
+      - name: catweb-app
+        image: dtr.west.us.se.dckr.org/se-jasatwal/catweb
+        ports:
+        - containerPort: 80
