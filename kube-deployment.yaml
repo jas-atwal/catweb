@@ -1,17 +1,4 @@
 
-kind: Pod
-apiVersion: v1
-metadata:
-  name: catweb-app
-  labels:
-    app: catweb
-spec:
-  containers:
-    - name: catweb-app
-      image: dtr.west.us.se.dckr.org/se-jasatwal/catweb
-
----
-
 kind: Service
 apiVersion: v1
 metadata:
@@ -20,7 +7,7 @@ spec:
   selector:
     app: catweb
   ports:
-    - port: 80
+    - port: 5000
 
 ---
 
@@ -44,7 +31,7 @@ spec:
       - name: catweb-app
         image: dtr.west.us.se.dckr.org/se-jasatwal/catweb
         ports:
-        - containerPort: 80
+        - containerPort: 5000
 
 ---
 
