@@ -1,12 +1,15 @@
 # Use Alpine as base
-FROM alpine:latest
+# FROM alpine:latest
+FROM python:3-alpine
 
-# Metadata
-LABEL os.version="3.10"
-LABEL maintainer="jas.atwal@docker.com"
+# Image Labels
+LABEL org.opencontainers.image.authors = "jatwal@mirantis.com"
+LABEL org.opencontainers.image.name = "catweb-flask"
+LABEL org.opencontainers.image.source = "https://github.com/jatwal/catweb"
+LABEL org.opencontainers.image.description = "A simple Flask application for showing random cat gifs."
 
 # Install python and pip
-RUN apk add --no-cache --update python3
+# RUN apk add --no-cache --update python3
 
 # Upgrade pip
 RUN pip3 install --upgrade pip
